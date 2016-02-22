@@ -37,7 +37,7 @@ namespace LinQDemo
                 Console.WriteLine("B: MultipleReturnValues1     J: NumbersGrouping");
                 Console.WriteLine("C: MultipleReturnValues2     K: DemoLinqToSql");
                 Console.WriteLine("D: DeferredExecution1        L: DemoLinqToSqlWithDebugging");
-                Console.WriteLine("E: DeferredExecution2");
+                Console.WriteLine("E: DeferredExecution2        M: DemoLinqToSqlWithAnonymousType");
                 Console.WriteLine("F: ForcingExecution");
                 Console.WriteLine("G: NumberQuery0");
                 Console.WriteLine("H: NumberQuery1");
@@ -88,6 +88,9 @@ namespace LinQDemo
                     case 'L':
                         DemoLinqToSqlWithDebugging();
                         break;
+                    case 'M':
+                        DemoLinqToSqlWithAnonymousType();
+                        break;
                     default:
                         return;
                 }
@@ -96,6 +99,30 @@ namespace LinQDemo
 
             }
             
+        }
+
+        private void DemoLinqToSqlWithAnonymousType()
+        {
+            //Create Data Context
+            DataContext dc = new DataContext(NorthwindConnectionString);
+
+            //use a StringWriter as an output stream for logging:
+            var sw = new StringWriter();
+            dc.Log = sw;
+
+            var customers = from customer in dc.GetTable<Customer>()
+                where customer.Country == "USA"
+                select new
+                {
+                    customer.CompanyName,
+                    customer.State
+                };
+            
+            //Customer is a collection of a new type altogheter
+            //That is why the override TpString method in Customer is not called
+            DisplayResults("LINQ to SQL:", customers);
+            
+
         }
 
         private void DemoLinqToSqlWithDebugging()
