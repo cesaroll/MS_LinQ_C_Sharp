@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using LinQDemo.Model;
 
 namespace LinQDemo
@@ -38,8 +39,8 @@ namespace LinQDemo
                 Console.WriteLine("C: MultipleReturnValues2     K: DemoLinqToSql");
                 Console.WriteLine("D: DeferredExecution1        L: DemoLinqToSqlWithDebugging");
                 Console.WriteLine("E: DeferredExecution2        M: DemoLinqToSqlWithAnonymousType");
-                Console.WriteLine("F: ForcingExecution");
-                Console.WriteLine("G: NumberQuery0");
+                Console.WriteLine("F: ForcingExecution          N: CreateXmlContent");
+                Console.WriteLine("G: NumberQuery0              O: DemoLinqToXML");
                 Console.WriteLine("H: NumberQuery1");
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
@@ -91,6 +92,12 @@ namespace LinQDemo
                     case 'M':
                         DemoLinqToSqlWithAnonymousType();
                         break;
+                    case 'N':
+                        CreateXmlContent();
+                        break;
+                    case 'O':
+                        DemoLinqToXML();
+                        break;
                     default:
                         return;
                 }
@@ -100,6 +107,55 @@ namespace LinQDemo
             }
             
         }
+
+        #region LINQ to XML
+
+        private void DemoLinqToXML()
+        {
+            var courses = CreateCourseList();
+
+            var xml = new XElement("courses",
+                    from course in courses
+                    where course.Author.Contains("Robert Green")
+                    select 
+                        new XElement("course",
+                            new XAttribute("year", course.Year),
+                            new XElement("Title", course.Title),
+                            new XElement("Auhtor", course.Author)));
+
+            DisplayResults("Resulting XML", xml.ToString());
+        }
+
+        private void CreateXmlContent()
+        {
+            XElement xml = new XElement("courses",
+                new XElement("course",
+                    new XAttribute("Year", 2005),
+                    new XElement("Title", "Introduction to Programming"),
+                    new XElement("Author", "Ken Getz/Robert Green")));
+
+            DisplayResults("Resultig XML:", xml.ToString());
+        }
+        
+        private Course[] CreateCourseList()
+        {
+            Course[] courses =
+            {
+                new Course(){Title = "Introduction to LINQ", Year = 2008, Author = "Ken Getz/Robert Green"}, 
+                new Course(){Title = "ASP.NET 3.5", Year = 2008, Author = "Don Kiely/Ken Getz"}, 
+                new Course(){Title = "Introduction to Programming", Year = 2005, Author = "Ken Getz/Robert Green"} 
+            };
+
+            return courses;
+        }
+
+        class Course
+        {
+            public string Title;
+            public int Year;
+            public string Author;
+        }
+        #endregion
 
         private void DemoLinqToSqlWithAnonymousType()
         {
@@ -276,6 +332,7 @@ namespace LinQDemo
             return value*2;
         }
 
+        #region Display Results
         private void DisplayResults(string msg)
         {
             Console.WriteLine(msg);
@@ -297,6 +354,8 @@ namespace LinQDemo
                 Console.WriteLine(item);
             }
         }
+
+        #endregion
 
         private void NumbersGreatherThan5()
         {
