@@ -30,11 +30,14 @@ namespace LinQDemo
             {
                 Console.Clear();
 
-                Console.WriteLine("A: NumbersGreaterThan5");
+                Console.WriteLine("A: NumbersGreaterThan5       I: NumberQueryWithExtensionMethod");
                 Console.WriteLine("B: MultipleReturnValues1");
                 Console.WriteLine("C: MultipleReturnValues2");
                 Console.WriteLine("D: DeferredExecution1");
                 Console.WriteLine("E: DeferredExecution2");
+                Console.WriteLine("F: ForcingExecution");
+                Console.WriteLine("G: NumberQuery0");
+                Console.WriteLine("H: NumberQuery1");
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
 
@@ -61,6 +64,18 @@ namespace LinQDemo
                     case 'E':
                         DeferredExecution2();
                         break;
+                    case 'F':
+                        ForcingExecution();
+                        break;
+                    case 'G':
+                        NumberQuery0();
+                        break;
+                    case 'H':
+                        NumberQuery1();
+                        break;
+                    case 'I':
+                        NumberQueryWithExtensionMethod();
+                        break;
                     default:
                         return;
                 }
@@ -69,6 +84,59 @@ namespace LinQDemo
 
             }
             
+        }
+
+        private void NumberQueryWithExtensionMethod()
+        {
+            int[] numbers = { 1, 5, 3, 6, 10, 12, 8 };
+
+            var oddNumbers = from number in numbers
+                             where number.IsOdd()
+                             orderby number descending
+                             select number;
+
+            DisplayResults("Odd numbers (using extension method)", oddNumbers);
+        }
+        
+
+        private void NumberQuery1()
+        {
+            int[] numbers = { 1, 5, 3, 6, 10, 12, 8 };
+
+            var oddNumbers = from number in numbers
+                                where number % 2 != 0
+                                orderby number descending 
+                                select number;
+
+            DisplayResults("Odd numbers", oddNumbers);
+        }
+
+        private void NumberQuery0()
+        {
+            int[] numbers = { 1, 5, 3, 6, 10, 12, 8 };
+
+            var sortedNumbers = from number in numbers
+                        orderby number
+                        select number;
+
+            DisplayResults("Sorted numbers", sortedNumbers);
+        }
+
+        private void ForcingExecution()
+        {
+            int[] numbers = { 1, 5, 3, 6, 10, 12, 8 };
+
+            var query = from number in numbers
+                        select DoubleIt(number);
+
+            var items = query.ToList();
+
+            query = from number in numbers
+                        select DoubleIt(number + 10);
+
+            DisplayResults("Converted to List:", items);
+            DisplayResults("Values in query", query);
+
         }
 
         private void DeferredExecution2()
@@ -88,8 +156,7 @@ namespace LinQDemo
 
             DisplayResults("Deferred Execution revisited", query2);
         }
-
-
+        
         private void DeferredExecution1()
         {
             int[] numbers = {1,5,3,6,10,12,8};
