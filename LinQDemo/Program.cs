@@ -26,6 +26,7 @@ namespace LinQDemo
         {
             Console.WriteLine("A: NumbersGreaterThan5");
             Console.WriteLine("B: MultipleReturnValues1");
+            Console.WriteLine("C: MultipleReturnValues2");
 
             Console.WriteLine("\nEnter an Option (Press . to exit):");
             
@@ -42,6 +43,9 @@ namespace LinQDemo
                     break;
                 case 'B':
                     MultipleReturnValues1();
+                    break;
+                case 'C':
+                    MultipleReturnValues2();
                     break;
             }
 
@@ -83,6 +87,28 @@ namespace LinQDemo
                     Length = file.Length,
                     CreationTime = file.CreationTime
                 };
+
+            foreach (var fileInfo in files)
+            {
+                Console.WriteLine("{0} contains {1} bytes, created at {2}",
+                    fileInfo.Name, fileInfo.Length, fileInfo.CreationTime);
+            }
+        }
+
+        private void MultipleReturnValues2()
+        {
+            //Globals.BreakForDebugging();
+
+            var allFiles = new DirectoryInfo("C:\\").GetFiles();
+            var files = from file in allFiles
+                        where file.Length > 10000
+                        orderby file.Length, file.Name
+                        select new
+                        {
+                            Name = file.Name,
+                            Length = file.Length,
+                            CreationTime = file.CreationTime
+                        };
 
             foreach (var fileInfo in files)
             {
