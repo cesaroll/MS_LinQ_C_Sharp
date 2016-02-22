@@ -2,6 +2,8 @@
 using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Linq;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using LinQDemo.Model;
 
 namespace LinQDemo
 {
@@ -32,8 +35,8 @@ namespace LinQDemo
 
                 Console.WriteLine("A: NumbersGreaterThan5       I: NumberQueryWithExtensionMethod");
                 Console.WriteLine("B: MultipleReturnValues1     J: NumbersGrouping");
-                Console.WriteLine("C: MultipleReturnValues2");
-                Console.WriteLine("D: DeferredExecution1");
+                Console.WriteLine("C: MultipleReturnValues2     K: DemoLinqToSql");
+                Console.WriteLine("D: DeferredExecution1        L: DemoLinqToSqlWithDebugging");
                 Console.WriteLine("E: DeferredExecution2");
                 Console.WriteLine("F: ForcingExecution");
                 Console.WriteLine("G: NumberQuery0");
@@ -79,6 +82,12 @@ namespace LinQDemo
                     case 'J':
                         NumbersGrouping();
                         break;
+                    case 'K':
+                        DemoLinqToSql();
+                        break;
+                    case 'L':
+                        DemoLinqToSqlWithDebugging();
+                        break;
                     default:
                         return;
                 }
@@ -87,6 +96,49 @@ namespace LinQDemo
 
             }
             
+        }
+
+        private void DemoLinqToSqlWithDebugging()
+        {
+            //Create Data Context
+            DataContext dc = new DataContext(NorthwindConnectionString);
+
+            //use a StringWriter as an output stream for logging:
+            var sw = new StringWriter();
+            dc.Log = sw;
+
+            var customers = from cust in dc.GetTable<Customer>()
+                            where cust.Country == "USA"
+                            select cust;
+
+            DisplayResults("Query: ", customers.ToString());
+            DisplayResults("LINQ to SQL:", customers);
+            DisplayResults("Log Output: ", sw.ToString());
+
+
+        }
+        private void DemoLinqToSql()
+        {
+            //Create Data Context
+            DataContext dc = new DataContext(NorthwindConnectionString);
+
+            //Returns a collection of objects of Customer type (Deferred execution)
+            var customerTable = dc.GetTable<Customer>();
+
+            var customers = from cust in customerTable
+                where cust.Country == "USA"
+                select cust;
+
+            DisplayResults("LINQ to SQL:", customers);
+
+
+        }
+
+        public string NorthwindConnectionString {
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString;
+            }
         }
 
         private void NumbersGrouping()
@@ -200,6 +252,13 @@ namespace LinQDemo
         private void DisplayResults(string msg)
         {
             Console.WriteLine(msg);
+        }
+
+        private void DisplayResults(string msg, string item)
+        {
+            Console.WriteLine(msg + "\n============================================");
+
+            Console.WriteLine(item);
         }
 
         private void DisplayResults(string msg, IEnumerable items)
