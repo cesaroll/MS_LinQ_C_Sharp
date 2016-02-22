@@ -31,7 +31,7 @@ namespace LinQDemo
                 Console.Clear();
 
                 Console.WriteLine("A: NumbersGreaterThan5       I: NumberQueryWithExtensionMethod");
-                Console.WriteLine("B: MultipleReturnValues1");
+                Console.WriteLine("B: MultipleReturnValues1     J: NumbersGrouping");
                 Console.WriteLine("C: MultipleReturnValues2");
                 Console.WriteLine("D: DeferredExecution1");
                 Console.WriteLine("E: DeferredExecution2");
@@ -76,6 +76,9 @@ namespace LinQDemo
                     case 'I':
                         NumberQueryWithExtensionMethod();
                         break;
+                    case 'J':
+                        NumbersGrouping();
+                        break;
                     default:
                         return;
                 }
@@ -84,6 +87,29 @@ namespace LinQDemo
 
             }
             
+        }
+
+        private void NumbersGrouping()
+        {
+            int[] numbers = { 1, 5, 3, 6, 10, 12, 8 };
+
+            var groups = from number in numbers
+                orderby number ascending
+                group number by number.IsOdd()
+                into groupedNumbers
+                orderby groupedNumbers.Key descending
+                select new
+                {
+                    isOdd = groupedNumbers.Key,
+                    groupedNumbers
+                };
+
+            foreach (var group in groups)
+            {
+                DisplayResults("IsOdd: " + group.isOdd, group.groupedNumbers);
+                Console.WriteLine();
+            }
+
         }
 
         private void NumberQueryWithExtensionMethod()
@@ -98,7 +124,6 @@ namespace LinQDemo
             DisplayResults("Odd numbers (using extension method)", oddNumbers);
         }
         
-
         private void NumberQuery1()
         {
             int[] numbers = { 1, 5, 3, 6, 10, 12, 8 };
