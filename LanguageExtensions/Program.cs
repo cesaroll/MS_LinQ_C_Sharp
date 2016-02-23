@@ -24,6 +24,32 @@ namespace LanguageExtensions
 
         }
 
+        #region Lambda expressions for sorting
+
+        private void LambdaExpressionsForSorting()
+        {
+            DisplayResults("Lambda expressions for sorting:");
+            SearchForFiles6b(_searchPath, fi => fi.Length > 3000);
+        }
+
+        private void SearchForFiles6b(string path, Predicate<FileInfo> condition)
+        {
+            var files = new List<MyFileInfo>();
+
+            foreach (var fi in new DirectoryInfo(path).GetFiles())
+            {
+                if (condition(fi))
+                {
+                    files.Add(new MyFileInfo() { Name = fi.Name, Length = fi.Length, CreationTime = fi.CreationTime });
+                }
+            }
+
+            DisplayResults("Filter using function parameter: " + path, files.OrderBy(fi => fi.Length));
+
+        }
+
+        #endregion
+
         #region Lambda Expressions
 
         private void LambdaExpressions()
@@ -226,7 +252,7 @@ namespace LanguageExtensions
                         LambdaExpressions();
                         break;
                     case 'M':
-                        
+                        LambdaExpressionsForSorting();
                         break;
                     case 'N':
                         
