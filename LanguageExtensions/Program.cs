@@ -24,6 +24,15 @@ namespace LanguageExtensions
 
         }
 
+        #region Lambda Expressions
+
+        private void LambdaExpressions()
+        {
+            DisplayResults("Lambda Expressions:");
+            SearchForFiles6a(_searchPath, fi => fi.Length > 100 && fi.Length < 1000);
+        }
+        #endregion
+
         #region Anonymous Delegates
         private void AnonymousDelegates()
         {
@@ -214,7 +223,7 @@ namespace LanguageExtensions
                         AnonymousDelegates();
                         break;
                     case 'L':
-                        
+                        LambdaExpressions();
                         break;
                     case 'M':
                         
