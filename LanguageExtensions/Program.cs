@@ -24,7 +24,72 @@ namespace LanguageExtensions
 
         }
 
-        
+        #region Test Predicate
+
+        private void TestPredicate()
+        {
+            DisplayResults("Use Predicate Instance:");
+            DisplayResults("Large Files:");
+            SearchForFiles6a(_searchPath, LargeFiles);
+            DisplayResults("Small Files:");
+            SearchForFiles6a(_searchPath, SmallFiles);
+
+        }
+
+        private bool SmallFiles(FileInfo fi)
+        {
+            return fi.Length < 10000;
+        }
+
+        private void SearchForFiles6a(string path, Predicate<FileInfo> condition)
+        {
+            var files = new List<MyFileInfo>();
+
+            foreach (var fi in new DirectoryInfo(path).GetFiles())
+            {
+                if (condition(fi))
+                {
+                    files.Add(new MyFileInfo() { Name = fi.Name, Length = fi.Length, CreationTime = fi.CreationTime });
+                }
+            }
+
+            DisplayResults("Filter using function parameter: " + path, files);
+
+        }
+
+        #endregion
+
+        #region Test Delegates
+
+        private delegate Boolean FileFilterDelegate(FileInfo fi);
+        private void TestDelegates()
+        {
+            DisplayResults("Use Delegate instance:");
+            SearchForFiles6(_searchPath, new FileFilterDelegate(LargeFiles));
+        }
+
+        private bool LargeFiles(FileInfo fi)
+        {
+            return fi.Length >= 10000;
+        }
+
+        private void SearchForFiles6(string path, FileFilterDelegate condition)
+        {
+            var files = new List<MyFileInfo>();
+
+            foreach (var fi in new DirectoryInfo(path).GetFiles())
+            {
+                if (condition(fi))
+                {
+                    files.Add(new MyFileInfo(){Name = fi.Name, Length = fi.Length, CreationTime = fi.CreationTime});
+                }
+            }
+
+            DisplayResults("Filter using function parameter: " + path, files);
+        }
+
+        #endregion
+
         #region Implicit declaration
         /// <summary>
         /// Introduce and use Implicit declaration
@@ -85,7 +150,7 @@ namespace LanguageExtensions
             {
                 Console.Clear();
 
-                Console.WriteLine("A: Basic File information                J: Test Rpedicate");
+                Console.WriteLine("A: Basic File information                J: Test Predicate");
                 Console.WriteLine("B: File information with Class           K: Anonymous Delegates");
                 Console.WriteLine("C:                                       L: Lambda Expressions");
                 Console.WriteLine("D:                                       M: Lambda expressions for sorting");
@@ -129,10 +194,10 @@ namespace LanguageExtensions
                         
                         break;
                     case 'I':
-                        
+                        TestDelegates();
                         break;
                     case 'J':
-                        
+                        TestPredicate();
                         break;
                     case 'K':
                         
