@@ -18,6 +18,31 @@ namespace LinqToObjects
             prog.Menu();
         }
 
+        #region Query Generic List
+
+        private void QueryGenericList()
+        {
+            var files = Files.GetFiles(searchPath);
+
+            //SQl Syntax
+
+            var query = from fi in files
+                where fi.Length < 1024
+                orderby fi.Length descending, fi.Name
+                select new {fi.Name, fi.Length};
+            
+            "Generic List (SQL Syntax)".DisplayResults(query);
+
+            //Functional Syntax
+            var query2 = files.Where(fi => fi.Length < 1024)
+                .OrderByDescending(fi => fi.Length)
+                .ThenBy(fi => fi.Name)
+                .Select(fi => new {fi.Name, fi.Length});
+
+            "Generic List (Functional SYntax)".DisplayResults(query2);
+        }
+        #endregion
+
         #region Query Array of Different types
 
         private void QueryArrayOfDifTypes()
@@ -92,6 +117,7 @@ namespace LinqToObjects
                 Console.Clear();
 
                 Console.WriteLine("A: Query Array               B: Query Array of Different Types");
+                Console.WriteLine("C: Query Generic List");
                 
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
@@ -111,6 +137,7 @@ namespace LinqToObjects
                         QueryArrayOfDifTypes();
                         break;
                     case 'C':
+                        QueryGenericList();
                         break;
                     case 'D':
                         break;
