@@ -24,6 +24,17 @@ namespace LanguageExtensions
 
         }
 
+        #region Anonymous Delegates
+        private void AnonymousDelegates()
+        {
+            DisplayResults("Anonymous Delegates:");
+            SearchForFiles6a(_searchPath, delegate(FileInfo fi)
+            {
+                return fi.Length > 100 && fi.Length < 10000;
+            });
+        }
+        #endregion
+
         #region Test Predicate
 
         private void TestPredicate()
@@ -200,7 +211,7 @@ namespace LanguageExtensions
                         TestPredicate();
                         break;
                     case 'K':
-                        
+                        AnonymousDelegates();
                         break;
                     case 'L':
                         
