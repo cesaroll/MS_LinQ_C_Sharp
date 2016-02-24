@@ -18,6 +18,24 @@ namespace LinqToObjects
             prog.Menu();
         }
 
+        #region Query Generic Dictionary
+
+        private void QueryGenericDictionary()
+        {
+            var filesDictionary = Files.GetFiles(searchPath).ToDictionary(x => x.Name, x => x);
+
+            var query = from item in filesDictionary
+                let size = item.Value.Length
+                where size < 1024
+                orderby size descending, item.Key
+                select new {item.Key, size};
+
+            "Generic Dictionary:".DisplayResults(query);
+
+        }
+
+        #endregion
+
         #region Query Generic List
 
         private void QueryGenericList()
@@ -39,7 +57,7 @@ namespace LinqToObjects
                 .ThenBy(fi => fi.Name)
                 .Select(fi => new {fi.Name, fi.Length});
 
-            "Generic List (Functional SYntax)".DisplayResults(query2);
+            "Generic List (Functional Syntax)".DisplayResults(query2);
         }
         #endregion
 
@@ -117,7 +135,7 @@ namespace LinqToObjects
                 Console.Clear();
 
                 Console.WriteLine("A: Query Array               B: Query Array of Different Types");
-                Console.WriteLine("C: Query Generic List");
+                Console.WriteLine("C: Query Generic List        D: Query Generic Dictionary");
                 
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
@@ -140,6 +158,7 @@ namespace LinqToObjects
                         QueryGenericList();
                         break;
                     case 'D':
+                        QueryGenericDictionary();
                         break;
                     case 'E':
 
