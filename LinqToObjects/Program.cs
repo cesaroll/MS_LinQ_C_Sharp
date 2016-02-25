@@ -24,6 +24,37 @@ namespace LinqToObjects
             prog.Menu();
         }
 
+        #region Simple Set Operations
+
+        private void SimpleSetOperations()
+        {
+            //Create two sequences
+            string[] group1 = {"CA", "OR", "WA", "TX", "NM", "AZ", "CA", "NM", "TX"};
+            string[] group2 = {"MA", "WA", "TX", "FL", "VA", "NM", "TX", "ME"};
+
+            //Show Both Groups
+            "Group1:".DisplayResults(group1);
+            "Group2:".DisplayResults(group2);
+
+            //Concatenates two sequences
+            var group3 = group1.Concat(group2);
+            "Group1.Concat(Group2):".DisplayResults(group3);
+
+            //Union removes duplicates
+            group3 = group1.Union(group2);
+            "Group1.Union(Group2):".DisplayResults(group3);
+
+            //Intersect shows items that exist in both groups
+            group3 = group1.Intersect(group2);
+            "Group1.Inersect(Group2):".DisplayResults(group3);
+
+            //Find differences
+            group3 = group1.Except(group2);
+            "Group1.Except(Group2):".DisplayResults(group3);
+
+        }
+        #endregion
+
         #region Aggregate Calculations
 
         private void AggregateCalculations()
@@ -524,9 +555,10 @@ namespace LinqToObjects
                         SimpleCalculations();
                         break;
                     case 'O':
+                        AggregateCalculations();
                         break;
                     case 'P':
-                        AggregateCalculations();
+                        SimpleSetOperations();
                         break;
                     case 'Q':
                         
