@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Global;
+using Global.Comparer;
+using LinQDemo.Model;
 
 namespace LinqToObjects
 {
@@ -20,6 +22,67 @@ namespace LinqToObjects
 
             prog.Menu();
         }
+
+        #region Verifying Sequences
+
+        private void VerifyingSequences()
+        {
+            var products = Northwind.Products;
+
+            var results = products.Where(prod => prod.CategoryID == 1);
+            "Products Where CategoryID == 1".DisplayResults(results);
+
+            //Determine is a list has any elements
+            var anyElements = results.Any();
+            string.Format("Are there Any elements: {0}", anyElements).DisplayResults();
+            
+            //Determine if any poducts are discontinued
+            var anyDiscontinued = results.Any(p => p.Discontinued);
+            string.Format("Any elements discontinued: {0}", anyDiscontinued).DisplayResults();
+
+            // Do any products start with "M"
+            var matchingElements = results.Any(p => p.ProductName.StartsWith("M"));
+            string.Format("Any elements start with \"M\": {0}", matchingElements).DisplayResults();
+
+            //Do all products have at least 5 units in stock?
+            var unitsInStockOK = results.All(p => p.UnitsInStock >= 5);
+            string.Format("All have 5 units in stock: {0}", unitsInStockOK).DisplayResults();
+
+            //Check if collection contains a given product
+            var item = new Product()
+            {
+                ProductID = 1,
+                ProductName = "Chai"
+            };
+
+            var containsChai = results.Contains(item, new ProductComparer());
+
+            string.Format("Contains Chai: {0}", containsChai).DisplayResults();
+
+        }
+        #endregion
+
+        #region Filter With Where
+
+        private void FilterWithWhere()
+        {
+            var files = Files.GetFiles(searchPath);
+
+            var fileResult = files
+                .Where(file => file.Length < 100)
+                .Select(file => string.Format("{0} ({1})", file.Name, file.Length));
+
+            "File Results:".DisplayResults(fileResult);
+
+            //Can use index as well
+            //In this case search only in the first 10 files of the original list
+            fileResult = files
+                .Where((file, idx) => (file.Length < 100) & (idx < 10))
+                .Select(file => string.Format("{0} ({1})", file.Name, file.Length));
+            "Indexed Results:".DisplayResults(fileResult);
+        }
+
+        #endregion
 
         #region Single Elements
 
@@ -79,7 +142,7 @@ namespace LinqToObjects
 
         }
         #endregion
-
+    
         #region Selecting Sequences
 
         private void SelectingSequences()
@@ -96,29 +159,7 @@ namespace LinqToObjects
 
         }
         #endregion
-
-        #region Filter With Where
-
-        private void FilterWithWhere()
-        {
-            var files = Files.GetFiles(searchPath);
-
-            var fileResult = files
-                .Where(file => file.Length < 100)
-                .Select(file => string.Format("{0} ({1})", file.Name, file.Length));
-            
-            "File Results:".DisplayResults(fileResult);
-
-            //Can use index as well
-            //In this case search only in the first 10 files of the original list
-            fileResult = files
-                .Where((file, idx) => (file.Length < 100) & (idx < 10))
-                .Select(file => string.Format("{0} ({1})", file.Name, file.Length));
-            "Indexed Results:".DisplayResults(fileResult);
-        }
-
-        #endregion
-
+        
         #region Creating Sequences
 
         private void CreatingSequences()
@@ -297,6 +338,7 @@ namespace LinqToObjects
                 Console.WriteLine("E: Query String              F: Query Array List");
                 Console.WriteLine("G: Creating Sequences        H: Selecting Sequences");
                 Console.WriteLine("I: Single Elements           J: Filter With Where");
+                Console.WriteLine("K: Verifying Sequences        ");
                 
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
@@ -340,7 +382,7 @@ namespace LinqToObjects
                         FilterWithWhere();
                         break;
                     case 'K':
-                        
+                        VerifyingSequences();
                         break;
                     case 'L':
                         
