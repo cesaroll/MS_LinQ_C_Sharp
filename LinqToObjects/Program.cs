@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +19,139 @@ namespace LinqToObjects
 
             prog.Menu();
         }
+
+        #region Single Elements
+
+        private void SingleElements()
+        {
+            var products = Northwind.Products;
+
+            var query1 = from prod in products
+                where prod.ProductID == 1
+                select prod;
+
+            var product = query1.SingleOrDefault();
+
+            "Product 1: ".DisplayResults(product.ProductName);
+
+            var prodInCat5 = from prod in products
+                where prod.CategoryID == 5
+                select prod;
+
+            //Find the last product in category 5
+
+            product = prodInCat5.LastOrDefault();
+
+            "Last in Category 5:".DisplayResults(product.ProductName);
+
+            //These raise exceptions
+
+            var query3 = products.Where(p => p.ProductID == 999);
+
+            try
+            {
+                //There is no product where ID is 999
+                product = query3.Single(); //Use SingleOrDefault() to return null instead of raising an exception
+            }
+            catch (Exception e)
+            {
+                "First Exception: ".DisplayResults(e.Message);
+            }
+
+            //Use SingleOrDefault() to return null instead of raising an exception
+            product = query3.SingleOrDefault();
+            string.Format("Product ID 999 is null: {0}", product == null).DisplayResults();
+            
+            try
+            {
+                //There are't 200 elements in category 5
+                product = prodInCat5.ElementAt(200); 
+            }
+            catch (Exception e)
+            {
+                "Second Exception: ".DisplayResults(e.Message);
+            }
+
+            // use ElementAtOrDefault() to return null instead of raising an exception
+            product = prodInCat5.ElementAtOrDefault(200);
+            string.Format("Product 200 in Category 5 is null: {0}", product == null).DisplayResults();
+
+        }
+        #endregion
+
+        #region Selecting Sequences
+
+        private void SelectingSequences()
+        {
+            var products = Northwind.Products.Where(p => p.CategoryID == 1);
+
+            var productsCatId1 = products.Where(p => p.CategoryID == 1);
+
+            "Select:".DisplayResults(productsCatId1);
+
+            //Selecting a formatted string using the index in the collection
+            var idxResult = productsCatId1.Select((prod, idx) => string.Format("{0}. {1}", idx + 1, prod.ProductName));
+            "Formatted string:".DisplayResults(idxResult);
+
+        }
+        #endregion
+
+        #region Creating Sequences
+
+        private void CreatingSequences()
+        {
+            var items = Enumerable.Range(1, 10);
+            "Enumerable.Range(1,10):".DisplayResults(items, true);
+
+            var repeated = Enumerable.Repeat("AppDev", 5);
+            "Enumerable.Repeat(\"AppDev\", 5)".DisplayResults(repeated, true);
+
+            //Reverse extends the collection class
+            var reversed = items.Reverse();
+            "items.Reverse()".DisplayResults(reversed, true);
+
+        }
+        #endregion
+
+        #region Query Array List
+
+        private void QueryArrayList()
+        {
+            var files = new ArrayList();
+
+            files.AddRange(Files.GetFiles(searchPath));
+
+            var query = from item in files.Cast<FileInfo>()
+                where (item.Attributes & FileAttributes.Archive) == FileAttributes.Archive
+                select new {item.Name, item.Attributes};
+
+            "Query ArrayList (Cast):".DisplayResults(query);
+
+            //OR
+            query = from FileInfo item in files
+                    where (item.Attributes & FileAttributes.Archive) == FileAttributes.Archive
+                    select new { item.Name, item.Attributes };
+
+            "Query ArrayList (Expicit):".DisplayResults(query);
+        }
+
+        #endregion
+
+        #region Query String
+
+        private void QueryString()
+        {
+            var testString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            var vowels = testString.Where(ch => ch.IsVowel());
+            var vowelCount = vowels.Count();
+
+            string.Format("The string \"{0}\" contains {1} vowel(s)", testString, vowelCount).DisplayResults();
+            "The vowels are:".DisplayResults(vowels, true);
+
+        }
+
+        #endregion
 
         #region Query Generic Dictionary
 
@@ -136,6 +271,9 @@ namespace LinqToObjects
 
                 Console.WriteLine("A: Query Array               B: Query Array of Different Types");
                 Console.WriteLine("C: Query Generic List        D: Query Generic Dictionary");
+                Console.WriteLine("E: Query String              F: Query Array List");
+                Console.WriteLine("G: Creating Sequences        H: Selecting Sequences");
+                Console.WriteLine("I: Single Elements");
                 
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
@@ -161,19 +299,19 @@ namespace LinqToObjects
                         QueryGenericDictionary();
                         break;
                     case 'E':
-
+                        QueryString();
                         break;
                     case 'F':
-
+                        QueryArrayList();
                         break;
                     case 'G':
-
+                        CreatingSequences();
                         break;
                     case 'H':
-
+                        SelectingSequences();
                         break;
                     case 'I':
-                        
+                        SingleElements();
                         break;
                     case 'J':
                        

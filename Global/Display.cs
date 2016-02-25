@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,12 +28,30 @@ namespace Global
 
         public static void DisplayResults(this string msg, IEnumerable items)
         {
+           DisplayResults(msg, items, false);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="items"></param>
+        /// <param name="SameLine"></param>
+        public static void DisplayResults(this string msg, IEnumerable items, bool sameLine)
+        {
             Console.WriteLine(msg + "\n============================================");
 
             foreach (var item in items)
             {
-                Console.WriteLine(item);
+                if(sameLine)
+                    Console.Write(item + " ");
+                else
+                    Console.WriteLine(item);
             }
+
+            if(sameLine)
+                Console.WriteLine();
+
             Console.WriteLine();
         }
 

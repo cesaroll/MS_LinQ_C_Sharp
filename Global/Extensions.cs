@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Global
 {
@@ -23,6 +25,11 @@ namespace Global
         public static bool IsEven(this int value)
         {
             return !IsOdd(value);
+        }
+
+        public static bool IsVowel(this char ch)
+        {
+            return "AEIOU".Contains(Char.ToUpper(ch));
         }
 
     }
