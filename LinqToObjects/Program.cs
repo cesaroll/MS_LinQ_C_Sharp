@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,97 @@ namespace LinqToObjects
 
             prog.Menu();
         }
+
+        #region Aggregate Calculations
+
+        private void AggregateCalculations()
+        {
+            var products = Northwind.Products.Where(p => p.CategoryID == 1);
+
+            /* Use the agregate method to perform a calculation of the sum of the squares
+             * of the item prices, so you can calculate the variance in the prices, 
+             * and take its square root to determine its standard deviation.
+             * Calculate the sum of the squares of the difference between each price and 
+             * the average price, and divide by the count of items - 1.
+             * Take the square root of the result to calculate the
+             * standard deviation.
+             */
+
+            var averagePrice = products.Average(p => p.UnitPrice);
+
+            var sumSquares = products
+                .Aggregate(0,
+                    (decimal current, Product item) =>
+                        current + (decimal) (Math.Pow((double) (item.UnitPrice - averagePrice), 2)));
+
+            decimal variance = sumSquares/products.Count();
+
+            var standardDeviation = Math.Sqrt((double)variance);
+
+            string.Format("Standard Deviaton = {0:N2}", standardDeviation).DisplayResults();
+
+
+        }
+        #endregion
+
+        #region Simple Calculations
+
+        private void SimpleCalculations()
+        {
+            var products = Northwind.Products;
+            var decimalResults = from product in products
+                select product.UnitPrice;
+
+            var averagePrice = decimalResults.Average();
+            string.Format("Price average = {0:C}", averagePrice).DisplayResults();
+
+            //You can pass a lambda expression to calculating methods
+            averagePrice = products.Average(p => p.UnitPrice);
+            string.Format("Price average (lambda) = {0:C}", averagePrice).DisplayResults();
+
+            //Count
+            var productCount = products.Count();
+            string.Format("Count = {0}", productCount).DisplayResults();
+
+            //Count of products starting with "B"
+            productCount = products.Count(p => p.ProductName.StartsWith("B"));
+            string.Format("Start with \"B\" Count = {0}", productCount).DisplayResults();
+
+            //Retrieve Maximum Price
+            var maxPrice = products.Max(p => p.UnitPrice);
+            string.Format("Max price = {0:C}", maxPrice).DisplayResults();
+
+            //Calculate Sum of Units in Stock
+            var total = products.Sum(p => p.UnitsInStock);
+            string.Format("Total Units in Stock = {0}", total).DisplayResults();
+
+        }
+        #endregion
+
+        #region Positionning Sequences
+
+        private void PositionWithSequences()
+        {
+            //Mixing Query Syntax with Functinal Syntax
+            var products = (from prod in Northwind.Products
+                orderby prod.ProductName
+                select string.Format("{0}: {1}", prod.ProductID, prod.ProductName))
+                .Skip(10)
+                .Take(5);
+
+            "Products Query (Skip 10 Take 5):".DisplayResults(products);
+
+            //Using functional Syntax only
+            products = Northwind.Products
+                .OrderBy(p => p.ProductName)
+                .Select(p => string.Format("{0}: {1}", p.ProductID, p.ProductName))
+                .Skip(10)
+                .Take(5);
+
+            "Products Functional (Skip 10 Take 5):".DisplayResults(products);
+        }
+
+        #endregion
 
         #region Converting Sequences
 
@@ -363,6 +455,8 @@ namespace LinqToObjects
                 Console.WriteLine("G: Creating Sequences        H: Selecting Sequences");
                 Console.WriteLine("I: Single Elements           J: Filter With Where");
                 Console.WriteLine("K: Verifying Sequences       L: Converting Sequences");
+                Console.WriteLine("M: Positionning Sequences    N: Simple Calculations");
+                Console.WriteLine("O: Aggregate Calculations    P: Simple Set Operations");
                 
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
@@ -412,15 +506,15 @@ namespace LinqToObjects
                         ConvertingSequences();
                         break;
                     case 'M':
-                        
+                        PositionWithSequences();
                         break;
                     case 'N':
-                        
+                        SimpleCalculations();
                         break;
                     case 'O':
                         break;
                     case 'P':
-                        
+                        AggregateCalculations();
                         break;
                     case 'Q':
                         
