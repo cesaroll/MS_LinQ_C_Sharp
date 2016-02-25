@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -94,6 +95,28 @@ namespace LinqToObjects
             "Formatted string:".DisplayResults(idxResult);
 
         }
+        #endregion
+
+        #region Filter With Where
+
+        private void FilterWithWhere()
+        {
+            var files = Files.GetFiles(searchPath);
+
+            var fileResult = files
+                .Where(file => file.Length < 100)
+                .Select(file => string.Format("{0} ({1})", file.Name, file.Length));
+            
+            "File Results:".DisplayResults(fileResult);
+
+            //Can use index as well
+            //In this case search only in the first 10 files of the original list
+            fileResult = files
+                .Where((file, idx) => (file.Length < 100) & (idx < 10))
+                .Select(file => string.Format("{0} ({1})", file.Name, file.Length));
+            "Indexed Results:".DisplayResults(fileResult);
+        }
+
         #endregion
 
         #region Creating Sequences
@@ -273,7 +296,7 @@ namespace LinqToObjects
                 Console.WriteLine("C: Query Generic List        D: Query Generic Dictionary");
                 Console.WriteLine("E: Query String              F: Query Array List");
                 Console.WriteLine("G: Creating Sequences        H: Selecting Sequences");
-                Console.WriteLine("I: Single Elements");
+                Console.WriteLine("I: Single Elements           J: Filter With Where");
                 
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
@@ -314,7 +337,7 @@ namespace LinqToObjects
                         SingleElements();
                         break;
                     case 'J':
-                       
+                        FilterWithWhere();
                         break;
                     case 'K':
                         
