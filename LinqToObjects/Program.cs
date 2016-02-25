@@ -52,6 +52,18 @@ namespace LinqToObjects
 
             string.Format("Standard Deviaton = {0:N2}", standardDeviation).DisplayResults();
 
+            /* You can use Aggregate method with
+             * non-numeric types, as well.
+             * Start by retreiveing all the product names
+            */
+
+            var productNames = products.Select(p => p.ProductName);
+
+            var productList = productNames
+                .Aggregate(string.Empty,
+                    (current, name) => (string.IsNullOrEmpty(current) ? name : current + ", " + name));
+
+            "Aggregate Names:".DisplayResults(productList);
 
         }
         #endregion
