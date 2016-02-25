@@ -23,6 +23,30 @@ namespace LinqToObjects
             prog.Menu();
         }
 
+        #region Converting Sequences
+
+        private void ConvertingSequences()
+        {
+            var products = Northwind.Products.Where(p => p.CategoryID == 2);
+
+            var nameList = string.Join(", ", products.Select(p => p.ProductName).ToArray()); //ToArray is not necesary but we are testing conversions
+            "Name List:".DisplayResults(nameList);
+
+            //Convert Products to Dictionary
+            var productsDictionary = products.ToDictionary(p => p.ProductID);
+
+            var sw = new StringWriter();
+            foreach (var kvp in productsDictionary)
+            {
+                sw.WriteLine("{0}: {1}", kvp.Key, kvp.Value.ProductName);
+            }
+
+            "Dictionary Contents:".DisplayResults(sw.ToString());
+
+        }
+
+        #endregion
+
         #region Verifying Sequences
 
         private void VerifyingSequences()
@@ -338,7 +362,7 @@ namespace LinqToObjects
                 Console.WriteLine("E: Query String              F: Query Array List");
                 Console.WriteLine("G: Creating Sequences        H: Selecting Sequences");
                 Console.WriteLine("I: Single Elements           J: Filter With Where");
-                Console.WriteLine("K: Verifying Sequences        ");
+                Console.WriteLine("K: Verifying Sequences       L: Converting Sequences");
                 
 
                 Console.WriteLine("\nEnter an Option (Press . to exit):");
@@ -385,7 +409,7 @@ namespace LinqToObjects
                         VerifyingSequences();
                         break;
                     case 'L':
-                        
+                        ConvertingSequences();
                         break;
                     case 'M':
                         
