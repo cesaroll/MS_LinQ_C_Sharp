@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Global", "Global\Global.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectModelDemo", "ObjectModelDemo\ObjectModelDemo.csproj", "{D5E40E13-BAFF-4A6E-84BF-630A460AEFF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQToSQLDemo", "LINQToSQLDemo\LINQToSQLDemo.csproj", "{9CEE0331-86A1-4C5E-B601-0F1ADBF283CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D5E40E13-BAFF-4A6E-84BF-630A460AEFF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5E40E13-BAFF-4A6E-84BF-630A460AEFF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5E40E13-BAFF-4A6E-84BF-630A460AEFF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CEE0331-86A1-4C5E-B601-0F1ADBF283CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CEE0331-86A1-4C5E-B601-0F1ADBF283CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CEE0331-86A1-4C5E-B601-0F1ADBF283CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CEE0331-86A1-4C5E-B601-0F1ADBF283CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
