@@ -27,7 +27,7 @@ namespace LINQToSQLDemo.Util
 
         public static void DisplayResults(this string msg, bool separator)
         {
-            Console.WriteLine(msg);
+            Console.WriteLine("\n" + msg);
             if (separator)
                 Console.WriteLine();
         }

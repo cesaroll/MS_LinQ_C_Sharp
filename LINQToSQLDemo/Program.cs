@@ -35,6 +35,60 @@ namespace LINQToSQLDemo
 
         }
 
+        #region Aggregate Functions
+
+        private void AggregateFunction1()
+        {
+            var totalOrders = GetDataContext(true).Orders.Count();
+
+            string.Format("There are {0} total orders.", totalOrders).DisplayResults();
+        }
+
+        private void AggregateFunction2()
+        {
+            //Total orders for product 7
+            //var totalOrdersForSeven = GetDataContext(true).Order_Details.Where(od => od.ProductID == 7).Count();
+            var totalOrdersForSeven = GetDataContext(true).Order_Details.Count(od => od.ProductID == 7);
+
+            string.Format("There are {0} orders for product \"7\"", totalOrdersForSeven).DisplayResults();
+
+            //Return value of orders for product 7
+            var valueOrdersForSeven =
+                GetDataContext(true).Order_Details.Where(od => od.ProductID == 7).Sum(od => od.Quantity*od.UnitPrice);
+
+            string.Format("Value of orders for product \"7\" is: {0:C}", valueOrdersForSeven).DisplayResults();
+
+            //Return average value of orders for product 7
+            var average =
+                GetDataContext(true)
+                    .Order_Details.Where(od => od.ProductID == 7)
+                    .Select(od => od.Quantity*od.UnitPrice)
+                    .Average();
+
+            string.Format("Average value of orders for product \"7\": {0:C}", average).DisplayResults();
+
+            //Return max value of orders for product 7
+            var max =
+                GetDataContext(true)
+                    .Order_Details.Where(od => od.ProductID == 7)
+                    .Select(od => od.Quantity*od.UnitPrice)
+                    .Max();
+
+            string.Format("Max value of order for product \"7\": {0:C}", max).DisplayResults();
+
+            //Return min value of orders for product 7
+            var min =
+                GetDataContext(true)
+                    .Order_Details.Where(od => od.ProductID == 7)
+                    .Select(od => od.Quantity * od.UnitPrice)
+                    .Min();
+
+            string.Format("Min value of order for product \"7\": {0:C}", min).DisplayResults();
+
+        }
+
+        #endregion
+
         #region Scalar Functions
 
         private void ScalarFunction1()
@@ -168,6 +222,7 @@ namespace LINQToSQLDemo
                 Console.Clear();
 
                 Console.WriteLine("A: Simple Queries                        B: Scalar Functions");
+                Console.WriteLine("C: Aggregate Functions                   ");
 
                 Console.WriteLine("\nEnter an Option (any other to exit):");
 
@@ -190,6 +245,8 @@ namespace LINQToSQLDemo
                         ScalarFunction3();
                         break;
                     case 'C':
+                        AggregateFunction1();
+                        AggregateFunction2();
                         break;
                     case 'D':
                         break;
