@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +35,88 @@ namespace LINQToSQLDemo
             prog.Menu();
 
         }
+
+        #region Querying related tables
+
+        private void QueryRelatedTables1()
+        {
+            //Products in the Beverages category
+            var beverages = from product in GetDataContext(true).Products
+                where product.Category.CategoryName == "Beverages"
+                select new
+                {
+                    product.ProductName,
+                    product.UnitPrice
+                };
+
+            "Products in the Beverages Category:".DisplayHeader();
+
+            foreach (var item in beverages)
+            {
+                string.Format("{0} {1:C}", item.ProductName, item.UnitPrice).DisplayResults();
+            }
+
+        }
+
+        private void QueryRelatedTables2()
+        {
+            //Customers with 20 or more orders
+            var highOrdercustomers = from customer in GetDataContext().Customers
+                where customer.Orders.Count >= 20
+                select new
+                {
+                    Name = customer.CompanyName,
+                    Count = customer.Orders.Count
+                };
+
+            "Customer with 20 or more orders".DisplayHeader();
+
+            foreach (var item in highOrdercustomers)
+            {
+                string.Format("{0} placed {1} orders", item.Name, item.Count).DisplayResults();
+            }
+
+        }
+
+        private void QueryRelatedTables3()
+        {
+            // Customers with 3 or fewer orders
+            var lowOrderCustomers = from customer in GetDataContext().Customers
+                where customer.Orders.Count <= 3
+                select new
+                {
+                    customer.CompanyName,
+                    customer.City,
+                    customer.Region,
+                    customer.Orders
+                };
+
+            "Customers with 2 or fewer orders:".DisplayHeader();
+
+            foreach (var cust in lowOrderCustomers)
+            {
+                string.Format("{0} in {1}, {2} placed {3} orders",
+                    cust.CompanyName, cust.City, cust.Region, cust.Orders.Count).DisplayResults();
+            }
+
+        }
+
+        private void QueryRelatedTables4()
+        {
+            //Return total value of orders for
+            //Blauer See Delikatessen
+
+            var total =
+                GetDataContext()
+                    .Order_Details.Where(od => od.Order.Customer.CompanyName == "Blauer See Delikatessen")
+                    .Select(od => od.UnitPrice*od.Quantity)
+                    .Sum();
+
+            "Orders summary for Blauer See Delikatessen".DisplayHeader();
+            string.Format("Total value of orders: {0:C}", total).DisplayResults();
+
+        }
+        #endregion
 
         #region Aggregate Functions
 
@@ -222,7 +305,7 @@ namespace LINQToSQLDemo
                 Console.Clear();
 
                 Console.WriteLine("A: Simple Queries                        B: Scalar Functions");
-                Console.WriteLine("C: Aggregate Functions                   ");
+                Console.WriteLine("C: Aggregate Functions                   D: Querying related tables");
 
                 Console.WriteLine("\nEnter an Option (any other to exit):");
 
@@ -249,6 +332,10 @@ namespace LINQToSQLDemo
                         AggregateFunction2();
                         break;
                     case 'D':
+                        QueryRelatedTables1();
+                        QueryRelatedTables2();
+                        QueryRelatedTables3();
+                        QueryRelatedTables4();
                         break;
                     case 'E':
 
