@@ -54,6 +54,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Util\Display.cs" />
+    <Compile Include="Util\Extensions.cs" />
+    <Compile Include="Util\Files.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -75,12 +78,7 @@
       <DependentUpon>Northwind.dbml</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Global\Global.csproj">
-      <Project>{076a6952-fbfd-40f7-97e0-588966703d25}</Project>
-      <Name>Global</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
