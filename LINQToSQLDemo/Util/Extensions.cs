@@ -32,5 +32,10 @@ namespace LINQToSQLDemo.Util
             return "AEIOU".Contains(Char.ToUpper(ch));
         }
 
+        public static decimal ToEuros(this decimal amount)
+        {
+            return amount * 0.92M;
+        }
+
     }
 }

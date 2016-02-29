@@ -36,6 +36,250 @@ namespace LINQToSQLDemo
 
         }
 
+        #region Joins
+
+        private void Joins1()
+        {
+            var dc = GetDataContext();
+
+            //Products in the Beverages category
+            var beverages = from category in dc.Categories
+                            join product in dc.Products
+                    on category.CategoryID equals product.CategoryID
+                where category.CategoryName == "Beverages"
+                select new
+                {
+                    product.ProductName,
+                    product.UnitPrice
+                };
+
+            "Products in the Beverages category".DisplayResults();
+
+            foreach (var beverage in beverages)
+            {
+                string.Format("{0} ({1:C})", beverage.ProductName, beverage.UnitPrice).DisplayResults();
+            }
+
+        }
+
+        private void Joins2()
+        {
+            var dc = GetDataContext();
+
+            //Customers in Spain and how many orders they have placed.
+            //Inner Join
+            var spainCustomers = from cust in dc.Customers
+                where cust.Country == "Spain"
+                join order in dc.Orders
+                    on cust equals order.Customer
+                group order by order.Customer.CompanyName
+                into groupedOrders
+                select new
+                {
+                    CompanyName = groupedOrders.Key,
+                    Orders = groupedOrders
+                };
+
+            string.Format("{0} customers in Spain have placed orders", spainCustomers.Count()).DisplayResults();
+
+            foreach (var custOrd in spainCustomers)
+            {
+                string.Format("{0} placed {1} orders", custOrd.CompanyName, custOrd.Orders.Count()).DisplayResults();
+            }
+
+        }
+
+        private void Joins3()
+        {
+            var dc = GetDataContext();
+
+            //Customers in Spain and how many orders they have placed.
+            //Outer Join
+            var spainCustomers = from cust in dc.Customers
+                                 where cust.Country == "Spain"
+                                 join order in dc.Orders
+                                     on cust equals order.Customer
+                                 into groupedOrders
+                                 select new
+                                     {
+                                         CompanyName = cust.CompanyName,
+                                         Orders = groupedOrders
+                                     };
+
+            string.Format("There are {0} customers in Spain", spainCustomers.Count()).DisplayResults();
+
+            foreach (var custOrd in spainCustomers)
+            {
+                string.Format("{0} placed {1} orders", custOrd.CompanyName, custOrd.Orders.Count()).DisplayResults();
+            }
+
+
+        }
+
+        #endregion
+
+        #region Grouping
+
+        private void Grouping1()
+        {
+            //Customers in Spain grouped by City
+            var spainCustomers = from customer in GetDataContext().Customers
+                where customer.Country == "Spain"
+                group customer by customer.City
+                into groupedCustomers
+                select new
+                {
+                    City = groupedCustomers.Key,
+                    Customers = groupedCustomers
+                };
+
+            "Customers in Spain:".DisplayHeader();
+
+            foreach (var groupedCity in spainCustomers)
+            {
+                string.Format("{0} [{1} customer(s)]", groupedCity.City, groupedCity.Customers.Count()).DisplayResults();
+
+                foreach (var customer in groupedCity.Customers)
+                {
+                    string.Format("  {0} at {1}", customer.CompanyName, customer.Address).DisplayResults();
+                }
+
+            }
+
+        }
+
+        private void Grouping2()
+        {
+            
+            //Categories with more than 10 products
+            var categories = from product in GetDataContext().Products
+                group product by product.Category.CategoryName
+                into groupedProducts
+                where groupedProducts.Count() > 10
+                select new
+                {
+                    CategoryName = groupedProducts.Key,
+                    Products = groupedProducts
+                };
+
+            "Categories with more than 10 products".DisplayResults();
+
+            foreach (var category in categories)
+            {
+                string.Format("{0} [{1} products]", category.CategoryName, category.Products.Count()).DisplayResults();
+
+                foreach (var product in category.Products)
+                {
+                    string.Format("   {0}", product.ProductName).DisplayResults();
+                }
+
+            }
+
+        }
+
+        private void Grouping3()
+        {
+            //Annual revenue
+            var revenueByYear = from detail in GetDataContext().Order_Details
+                group detail by detail.Order.OrderDate.Value.Year
+                into groupedOrders
+                orderby groupedOrders.Key descending
+                select new
+                {
+                    Year = groupedOrders.Key,
+                    Revenue = groupedOrders.Sum(o => o.UnitPrice * o.Quantity)
+                };
+
+            "Annual Revenue".DisplayHeader();
+
+            foreach (var revenue in revenueByYear)
+            {
+                string.Format("{0} ({1:C})", revenue.Year, revenue.Revenue).DisplayResults();
+            }
+
+        }
+
+        #endregion
+
+        #region Extension Methods
+
+        private void ExtensionMethods()
+        {
+            //Value of orders for product 7
+            var valueDollars =
+                GetDataContext().Order_Details.Where(o => o.ProductID == 7).Sum(o => o.Quantity*o.UnitPrice);
+
+            "Orders Summary for product 7".DisplayHeader();
+
+            string.Format("The total value or orders was {0:C} dollars", valueDollars).DisplayResults();
+
+            //Reeturn the value or orders in euros in the linq expression
+
+            var valueEuros =
+                GetDataContext().Order_Details.Where(o => o.ProductID == 7).Sum(o => o.Quantity*o.UnitPrice).ToEuros();
+
+
+            string.Format("The total value or orders was {0:C} Euros", valueEuros).DisplayResults();
+        }
+
+        #endregion
+
+        #region Lambda Expressions
+
+        private void LambdaExpressions1()
+        {
+            //Revenue by beverage product
+
+            var beverages = (from product in GetDataContext().Products
+                where product.Category.CategoryName == "Beverages"
+                select new
+                {
+                    product.ProductName,
+                    Number = product.Order_Details.Count,
+                    Revenue = product.Order_Details.Sum(o => o.Quantity*o.UnitPrice)
+                }).OrderByDescending(b => b.Revenue);
+
+            "Revenue by beverage product:".DisplayHeader();
+
+            foreach (var beverage in beverages)
+            {
+                string.Format("{0} was ordered {1} times for a total of {2:C}",
+                    beverage.ProductName, beverage.Number, beverage.Revenue).DisplayResults();
+            }
+
+        }
+
+        private void LambdaExpressions2()
+        {
+            //return the toal number of orders for product 7
+            var orders = GetDataContext().Order_Details.Count(o => o.ProductID == 7);
+
+            string.Format("Product 7 was ordered {0} times", orders).DisplayResults();
+
+        }
+
+        private void LambdaExpressions3()
+        {
+            // Retrieve order 10530
+            var order = GetDataContext().Orders.FirstOrDefault(o => o.OrderID == 10530);
+
+            if (order != null)
+            {
+                "Order 10530".DisplayHeader();
+                string.Format("Order Date: {0}\nRequired Date: {1}\nShipped Date: {2}",
+                    order.OrderDate, order.RequiredDate, order.ShippedDate).DisplayResults();
+            }
+            else
+            {
+                "Order 10530 does not exist!".DisplayHeader();
+            }
+
+            
+
+        }
+
+        #endregion
+
         #region Querying related tables
 
         private void QueryRelatedTables1()
@@ -306,6 +550,8 @@ namespace LINQToSQLDemo
 
                 Console.WriteLine("A: Simple Queries                        B: Scalar Functions");
                 Console.WriteLine("C: Aggregate Functions                   D: Querying related tables");
+                Console.WriteLine("E: Lambda Expressions                    F: Extension Methods");
+                Console.WriteLine("G: Grouping                              H: Joins");
 
                 Console.WriteLine("\nEnter an Option (any other to exit):");
 
@@ -338,16 +584,22 @@ namespace LINQToSQLDemo
                         QueryRelatedTables4();
                         break;
                     case 'E':
-
+                        LambdaExpressions1();
+                        LambdaExpressions2();
+                        LambdaExpressions3();
                         break;
                     case 'F':
-
+                        ExtensionMethods();
                         break;
                     case 'G':
-
+                        Grouping1();
+                        Grouping2();
+                        Grouping3();
                         break;
                     case 'H':
-
+                        Joins1();
+                        Joins2();
+                        Joins3();
                         break;
                     case 'I':
                         
