@@ -36,6 +36,160 @@ namespace LINQToSQLDemo
 
         }
 
+        #region Modify Data
+
+        private void ModifyData()
+        {
+            var dc = GetDataContext();
+
+//            var beveragesBefore = from product in dc.Products
+//                where product.Category.CategoryName == "Beverages"
+//                select product;
+            var beveragesBefore = dc.Products.Where(p => p.Category.CategoryName == "Beverages");
+
+            "Current Prices:".DisplayHeader();
+
+            foreach (var product in beveragesBefore)
+            {
+                string.Format("{0, 25} currently costs {1:C}", product.ProductName, product.UnitPrice).DisplayResults();
+            }
+
+            //Reduce Prices by 10% for Beverages
+            foreach (var product in beveragesBefore)
+            {
+                product.UnitPrice = product.UnitPrice*0.9M;
+            }
+
+            //Save Changes
+            dc.SubmitChanges();
+
+            //Retrieve again and display new prices
+            var beveragesAfter = dc.Products.Where(p => p.Category.CategoryName == "Beverages");
+
+            "New Prices:".DisplayHeader();
+            foreach (var product in beveragesBefore)
+            {
+                string.Format("{0, 25} now costs {1:C}", product.ProductName, product.UnitPrice).DisplayResults();
+            }
+        }
+
+        private void ModifyData2()
+        {
+            var dc = GetDataContext();
+
+            //Retrieve a list of customers in Whashington
+            var waCustomersBefore =
+                dc.Customers.Where(c => c.Region == "WA").Select(c => new {c.CompanyName, c.City, c.Region});
+
+            "WA Customers Before:".DisplayHeader();
+
+            foreach (var item in waCustomersBefore)
+            {
+                string.Format("{0,15} in {1}, {2}", item.CompanyName, item.City, item.Region).DisplayResults();
+            }
+
+            var newCustomer = new Customer()
+            {
+                CustomerID = "BIGGE",
+                CompanyName = "Bigge Industries",
+                ContactName = "Robert Green",
+                ContactTitle = "President",
+                Address = "1234 NE Some St.",
+                City = "Redmond",
+                Region = "WA",
+                PostalCode = "98052",
+                Country = "USA",
+                Phone = "425-555-5555",
+                Fax = "425-555-5556"
+            };
+
+
+            //Add the customer
+            dc.Customers.InsertOnSubmit(newCustomer);
+
+            //Save Changes
+            dc.SubmitChanges();
+
+            //Retrieve a list of customers in Whashington
+            var waCustomersAfter =
+                dc.Customers.Where(c => c.Region == "WA").Select(c => new { c.CompanyName, c.City, c.Region });
+
+            "WA Customers After:".DisplayHeader();
+
+            foreach (var item in waCustomersAfter)
+            {
+                string.Format("{0,15} in {1}, {2}", item.CompanyName, item.City, item.Region).DisplayResults();
+            }
+
+
+        }
+
+        private void ModifyData3()
+        {
+            var dc = GetDataContext();
+
+            //Retrieve customer
+            var customer = dc.Customers.FirstOrDefault(c => c.CustomerID == "BIGGE");
+
+            if (customer == null)
+                return;
+
+            "Contact information for Bigge Industries:".DisplayHeader();
+
+            string.Format("Current contact is {0}, {1}", customer.ContactName, customer.ContactTitle).DisplayResults();
+
+            //Modify Customer Information
+
+            customer.ContactName = "Ken Getz";
+            customer.ContactTitle = "Owner";
+
+            //Save Changes
+            dc.SubmitChanges();
+
+            //Rettreive information ona customer
+            //Retrieve customer
+            var customer2 = dc.Customers.FirstOrDefault(c => c.CustomerID == "BIGGE");
+
+            if (customer2 == null)
+                return;
+
+            string.Format("Current contact is {0}, {1}", customer2.ContactName, customer2.ContactTitle).DisplayResults();
+
+        }
+
+        private void ModifyData4()
+        {
+            var dc = GetDataContext();
+
+            var customerBigge = dc.Customers.FirstOrDefault(c => c.CustomerID == "BIGGE");
+
+            if (customerBigge == null)
+            {
+                "BIGGE NOT found!".DisplayHeader();
+                return;
+            }
+                
+
+            //Delete Customer
+            dc.Customers.DeleteOnSubmit(customerBigge);
+
+            //Save Changes
+            dc.SubmitChanges();
+
+            //Retrieve a list of customers in Whashington
+            var waCustomersAfter =
+                dc.Customers.Where(c => c.Region == "WA").Select(c => new { c.CompanyName, c.City, c.Region });
+
+            "WA Customers After:".DisplayHeader();
+
+            foreach (var item in waCustomersAfter)
+            {
+                string.Format("{0,15} in {1}, {2}", item.CompanyName, item.City, item.Region).DisplayResults();
+            }
+        }
+
+        #endregion
+
         #region Joins
 
         private void Joins1()
@@ -552,6 +706,7 @@ namespace LINQToSQLDemo
                 Console.WriteLine("C: Aggregate Functions                   D: Querying related tables");
                 Console.WriteLine("E: Lambda Expressions                    F: Extension Methods");
                 Console.WriteLine("G: Grouping                              H: Joins");
+                Console.WriteLine("I: Modify Data                           ");
 
                 Console.WriteLine("\nEnter an Option (any other to exit):");
 
@@ -602,7 +757,10 @@ namespace LINQToSQLDemo
                         Joins3();
                         break;
                     case 'I':
-                        
+                        //ModifyData();
+                        //ModifyData2();
+                        //ModifyData3();
+                        ModifyData4();
                         break;
                     case 'J':
                         
