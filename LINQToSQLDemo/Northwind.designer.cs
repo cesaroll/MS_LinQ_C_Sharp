@@ -116,6 +116,27 @@ namespace LINQToSQLDemo
 				return this.GetTable<Category>();
 			}
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.AddCustomer")]
+		public ISingleResult<AddCustomerResult> AddCustomer([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerID", DbType="NChar(5)")] string customerID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CompanyName", DbType="NVarChar(40)")] string companyName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ContactName", DbType="NVarChar(30)")] string contactName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ContactTitle", DbType="NVarChar(30)")] string contactTitle, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Address", DbType="NVarChar(60)")] string address, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="City", DbType="NVarChar(15)")] string city, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Region", DbType="NVarChar(15)")] string region, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PostalCode", DbType="NVarChar(10)")] string postalCode, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Country", DbType="NVarChar(15)")] string country, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Phone", DbType="NVarChar(24)")] string phone, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fax", DbType="NVarChar(24)")] string fax)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), customerID, companyName, contactName, contactTitle, address, city, region, postalCode, country, phone, fax);
+			return ((ISingleResult<AddCustomerResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CustomersInRegion")]
+		public ISingleResult<CustomersInRegionResult> CustomersInRegion([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Region", DbType="NVarChar(15)")] string region)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), region);
+			return ((ISingleResult<CustomersInRegionResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteCustomer")]
+		public int DeleteCustomer([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerId", DbType="NChar(5)")] string customerId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), customerId);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Customers")]
@@ -1637,6 +1658,418 @@ namespace LINQToSQLDemo
 		{
 			this.SendPropertyChanging();
 			entity.Category = null;
+		}
+	}
+	
+	public partial class AddCustomerResult
+	{
+		
+		private string _CustomerID;
+		
+		private string _CompanyName;
+		
+		private string _ContactName;
+		
+		private string _ContactTitle;
+		
+		private string _Address;
+		
+		private string _City;
+		
+		private string _Region;
+		
+		private string _PostalCode;
+		
+		private string _Country;
+		
+		private string _Phone;
+		
+		private string _Fax;
+		
+		public AddCustomerResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="NChar(5) NOT NULL", CanBeNull=false)]
+		public string CustomerID
+		{
+			get
+			{
+				return this._CustomerID;
+			}
+			set
+			{
+				if ((this._CustomerID != value))
+				{
+					this._CustomerID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyName", DbType="NVarChar(40) NOT NULL", CanBeNull=false)]
+		public string CompanyName
+		{
+			get
+			{
+				return this._CompanyName;
+			}
+			set
+			{
+				if ((this._CompanyName != value))
+				{
+					this._CompanyName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactName", DbType="NVarChar(30)")]
+		public string ContactName
+		{
+			get
+			{
+				return this._ContactName;
+			}
+			set
+			{
+				if ((this._ContactName != value))
+				{
+					this._ContactName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactTitle", DbType="NVarChar(30)")]
+		public string ContactTitle
+		{
+			get
+			{
+				return this._ContactTitle;
+			}
+			set
+			{
+				if ((this._ContactTitle != value))
+				{
+					this._ContactTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(60)")]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this._Address = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_City", DbType="NVarChar(15)")]
+		public string City
+		{
+			get
+			{
+				return this._City;
+			}
+			set
+			{
+				if ((this._City != value))
+				{
+					this._City = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Region", DbType="NVarChar(15)")]
+		public string Region
+		{
+			get
+			{
+				return this._Region;
+			}
+			set
+			{
+				if ((this._Region != value))
+				{
+					this._Region = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PostalCode", DbType="NVarChar(10)")]
+		public string PostalCode
+		{
+			get
+			{
+				return this._PostalCode;
+			}
+			set
+			{
+				if ((this._PostalCode != value))
+				{
+					this._PostalCode = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Country", DbType="NVarChar(15)")]
+		public string Country
+		{
+			get
+			{
+				return this._Country;
+			}
+			set
+			{
+				if ((this._Country != value))
+				{
+					this._Country = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(24)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this._Phone = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fax", DbType="NVarChar(24)")]
+		public string Fax
+		{
+			get
+			{
+				return this._Fax;
+			}
+			set
+			{
+				if ((this._Fax != value))
+				{
+					this._Fax = value;
+				}
+			}
+		}
+	}
+	
+	public partial class CustomersInRegionResult
+	{
+		
+		private string _CustomerID;
+		
+		private string _CompanyName;
+		
+		private string _ContactName;
+		
+		private string _ContactTitle;
+		
+		private string _Address;
+		
+		private string _City;
+		
+		private string _Region;
+		
+		private string _PostalCode;
+		
+		private string _Country;
+		
+		private string _Phone;
+		
+		private string _Fax;
+		
+		public CustomersInRegionResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="NChar(5) NOT NULL", CanBeNull=false)]
+		public string CustomerID
+		{
+			get
+			{
+				return this._CustomerID;
+			}
+			set
+			{
+				if ((this._CustomerID != value))
+				{
+					this._CustomerID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyName", DbType="NVarChar(40) NOT NULL", CanBeNull=false)]
+		public string CompanyName
+		{
+			get
+			{
+				return this._CompanyName;
+			}
+			set
+			{
+				if ((this._CompanyName != value))
+				{
+					this._CompanyName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactName", DbType="NVarChar(30)")]
+		public string ContactName
+		{
+			get
+			{
+				return this._ContactName;
+			}
+			set
+			{
+				if ((this._ContactName != value))
+				{
+					this._ContactName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactTitle", DbType="NVarChar(30)")]
+		public string ContactTitle
+		{
+			get
+			{
+				return this._ContactTitle;
+			}
+			set
+			{
+				if ((this._ContactTitle != value))
+				{
+					this._ContactTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(60)")]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this._Address = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_City", DbType="NVarChar(15)")]
+		public string City
+		{
+			get
+			{
+				return this._City;
+			}
+			set
+			{
+				if ((this._City != value))
+				{
+					this._City = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Region", DbType="NVarChar(15)")]
+		public string Region
+		{
+			get
+			{
+				return this._Region;
+			}
+			set
+			{
+				if ((this._Region != value))
+				{
+					this._Region = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PostalCode", DbType="NVarChar(10)")]
+		public string PostalCode
+		{
+			get
+			{
+				return this._PostalCode;
+			}
+			set
+			{
+				if ((this._PostalCode != value))
+				{
+					this._PostalCode = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Country", DbType="NVarChar(15)")]
+		public string Country
+		{
+			get
+			{
+				return this._Country;
+			}
+			set
+			{
+				if ((this._Country != value))
+				{
+					this._Country = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(24)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this._Phone = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fax", DbType="NVarChar(24)")]
+		public string Fax
+		{
+			get
+			{
+				return this._Fax;
+			}
+			set
+			{
+				if ((this._Fax != value))
+				{
+					this._Fax = value;
+				}
+			}
 		}
 	}
 }

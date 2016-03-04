@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -35,6 +36,56 @@ namespace LINQToSQLDemo
             prog.Menu();
 
         }
+
+        #region Stored Procedures 1
+
+        private void StoredProcedures1_3()
+        {
+            var dc = GetDataContext(true);
+
+            //Delete the customer
+            dc.DeleteCustomer("AAAAA");
+
+            dc.Log = null;
+
+            //Show Customers in TX
+            var texasCustomers = dc.CustomersInRegion("TX");
+
+            DisplayCustomers(texasCustomers);
+
+        }
+
+        private void StoredProcedures1_1()
+        {
+            var dc = GetDataContext(true);
+
+            // Add new customer
+            dc.AddCustomer("AAAAA", "AAAAA Consulting", "Cesar Lopez", "CEO", "123 Main St.", "El Paso", "TX", "55555",
+                "USA", "955-555-5555", "955-555-5555");
+
+            dc.Log = null;
+
+            //Show Customers in TX
+            var texasCustomers = dc.CustomersInRegion("TX");
+            
+            DisplayCustomers(texasCustomers);
+
+        }
+
+        private void DisplayCustomers(ISingleResult<CustomersInRegionResult> cuir)
+        {
+            "Customers:".DisplayHeader();
+
+            foreach (var cust in cuir)
+            {
+                string.Format("{0} in {1}, {2} - Contact: {3}", cust.CompanyName, cust.City, cust.Region, cust.ContactName).DisplayResults();
+            }
+            
+            " ".DisplayResults();
+            " ".DisplayResults();
+        }
+
+        #endregion
 
         #region Modify Related Data
 
@@ -802,6 +853,7 @@ namespace LINQToSQLDemo
                 Console.WriteLine("E: Lambda Expressions                    F: Extension Methods");
                 Console.WriteLine("G: Grouping                              H: Joins");
                 Console.WriteLine("I: Modify Data                           J: Modify Related Data");
+                Console.WriteLine("K: Stored Procedures 1                   ");
 
                 Console.WriteLine("\nEnter an Option (any other to exit):");
 
@@ -861,7 +913,8 @@ namespace LINQToSQLDemo
                         ModifyRelatedData();
                         break;
                     case 'K':
-                        
+                        StoredProcedures1_1();
+                        StoredProcedures1_3();
                         break;
                     case 'L':
                         
