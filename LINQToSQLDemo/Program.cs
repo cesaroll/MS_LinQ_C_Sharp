@@ -36,6 +36,101 @@ namespace LINQToSQLDemo
 
         }
 
+        #region Modify Related Data
+
+        private void ModifyRelatedData()
+        {
+            var dc = GetDataContext();
+
+            var customerID = "ALFKI";
+
+            //Show Orders for a Cutomer
+            ShowCustomerOrders(dc, customerID);
+
+
+            //Retrieve full Customer
+            var customerALFIKI = dc.Customers.FirstOrDefault(c => c.CustomerID == customerID);
+
+            if (customerALFIKI == null)
+                return;
+
+            //Create new customer Order
+            var newOrder = new Order
+            {
+                CustomerID   = customerID,
+                OrderDate = DateTime.Today,
+                RequiredDate = DateTime.Today.AddDays(7),
+                EmployeeID = 4
+            };
+
+            //Add the order
+            customerALFIKI.Orders.Add(newOrder);
+
+            //Create and Add Order Details for this order
+            newOrder.Order_Details.Add(new Order_Detail{ProductID = 7, UnitPrice = 25, Quantity = 10, Discount = 0});
+            newOrder.Order_Details.Add(new Order_Detail{ProductID = 8, UnitPrice = 10, Quantity = 15, Discount = 0});
+            newOrder.Order_Details.Add(new Order_Detail{ProductID = 12, UnitPrice = 20, Quantity = 25, Discount = 0});
+
+            //Save Changes
+            dc.SubmitChanges();
+
+            //Record OrderID of the new order
+            var lastOrderId = newOrder.OrderID;
+
+            //Show Customer Orders after
+            ShowCustomerOrders(dc, customerID);
+
+            //Display Order Details
+            ShowOrderDetails(dc, lastOrderId);
+
+            /*
+             *  SELECT * FROM Orders WHERE CustomerID = 'ALFKI' ORDER BY OrderDate DESC;
+                SELECT * FROM [Order Details] WHERE OrderID = 11080;
+
+                DELETE [Order Details] WHERE OrderID = 11080;
+                DELETE Orders WHERE OrderID = 11080;
+             * 
+             */
+
+        }
+
+        private void ShowOrderDetails(NorthwindDataContext dc, int orderId)
+        {
+            var orderDetails = dc.Order_Details.Where(o => o.OrderID == orderId);
+            
+            string.Format("Details for order {0}", orderId).DisplayHeader();
+
+            foreach (var detail in orderDetails)
+            {
+                string.Format("{0} units of {1} at {2:C}", 
+                    detail.Quantity, detail.Product.ProductName, detail.UnitPrice).DisplayResults();
+            }
+
+        }
+
+        private void ShowCustomerOrders(NorthwindDataContext dc,  string custId)
+        {
+            var customerOrders =
+                dc.Customers.Where(c => c.CustomerID == custId).Select(c => new {c.CompanyName, c.Orders});
+
+            var customer = customerOrders.FirstOrDefault();
+            if (customer == null)
+                return;
+
+            string.Format("Orders for {0}", customer.CompanyName).DisplayHeader();
+
+            foreach (var cust in customerOrders)
+            {
+                foreach (var order in cust.Orders.OrderByDescending(o => o.OrderDate))
+                {
+                    string.Format("Order {0} placed {1:d} and required {2:d}",
+                        order.OrderID, order.OrderDate, order.RequiredDate).DisplayResults();
+                }
+            }
+        }
+
+        #endregion
+
         #region Modify Data
 
         private void ModifyData()
@@ -706,7 +801,7 @@ namespace LINQToSQLDemo
                 Console.WriteLine("C: Aggregate Functions                   D: Querying related tables");
                 Console.WriteLine("E: Lambda Expressions                    F: Extension Methods");
                 Console.WriteLine("G: Grouping                              H: Joins");
-                Console.WriteLine("I: Modify Data                           ");
+                Console.WriteLine("I: Modify Data                           J: Modify Related Data");
 
                 Console.WriteLine("\nEnter an Option (any other to exit):");
 
@@ -758,12 +853,12 @@ namespace LINQToSQLDemo
                         break;
                     case 'I':
                         //ModifyData();
-                        //ModifyData2();
+                        ModifyData2();
                         //ModifyData3();
                         ModifyData4();
                         break;
                     case 'J':
-                        
+                        ModifyRelatedData();
                         break;
                     case 'K':
                         
