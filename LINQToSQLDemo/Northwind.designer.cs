@@ -30,9 +30,7 @@ namespace LINQToSQLDemo
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertCustomer(Customer instance);
     partial void UpdateCustomer(Customer instance);
-    partial void DeleteCustomer(Customer instance);
     partial void InsertOrder(Order instance);
     partial void UpdateOrder(Order instance);
     partial void DeleteOrder(Order instance);
@@ -115,6 +113,16 @@ namespace LINQToSQLDemo
 			{
 				return this.GetTable<Category>();
 			}
+		}
+		
+		private void InsertCustomer(Customer obj)
+		{
+			this.AddCustomer(obj.CustomerID, obj.CompanyName, obj.ContactName, obj.ContactTitle, obj.Address, obj.City, obj.Region, obj.PostalCode, obj.Country, obj.Phone, obj.Fax);
+		}
+		
+		private void DeleteCustomer(Customer obj)
+		{
+			this.DeleteCustomer(obj.CustomerID);
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.AddCustomer")]
