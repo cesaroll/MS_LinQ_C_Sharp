@@ -72,4 +72,136 @@
       <Association Name="Category_Product" Member="Products" ThisKey="CategoryID" OtherKey="CategoryID" Type="Product" />
     </Type>
   </Table>
+  <Function Name="dbo.DeleteOrder" Method="DeleteOrder">
+    <Parameter Name="Original_OrderID" Parameter="original_OrderID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.DeleteOrderDetail" Method="DeleteOrderDetail">
+    <Parameter Name="Original_OrderID" Parameter="original_OrderID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ProductID" Parameter="original_ProductID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AddOrder" Method="AddOrder">
+    <Parameter Name="CustomerID" Parameter="customerID" Type="System.String" DbType="NChar(5)" />
+    <Parameter Name="EmployeeID" Parameter="employeeID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OrderDate" Parameter="orderDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="RequiredDate" Parameter="requiredDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="ShippedDate" Parameter="shippedDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="ShipVia" Parameter="shipVia" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Freight" Parameter="freight" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="ShipName" Parameter="shipName" Type="System.String" DbType="NVarChar(40)" />
+    <Parameter Name="ShipAddress" Parameter="shipAddress" Type="System.String" DbType="NVarChar(60)" />
+    <Parameter Name="ShipCity" Parameter="shipCity" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="ShipRegion" Parameter="shipRegion" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="ShipPostalCode" Parameter="shipPostalCode" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="ShipCountry" Parameter="shipCountry" Type="System.String" DbType="NVarChar(15)" />
+    <ElementType Name="AddOrderResult">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.String" DbType="NChar(5)" CanBeNull="true" />
+      <Column Name="EmployeeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="RequiredDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ShippedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ShipVia" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Freight" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ShipName" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="ShipAddress" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
+      <Column Name="ShipCity" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="ShipRegion" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="ShipPostalCode" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="ShipCountry" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.AddOrderDetail" Method="AddOrderDetail">
+    <Parameter Name="OrderID" Parameter="orderID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ProductID" Parameter="productID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UnitPrice" Parameter="unitPrice" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="Quantity" Parameter="quantity" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="Discount" Parameter="discount" Type="System.Single" DbType="Real" />
+    <ElementType Name="AddOrderDetailResult">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Discount" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.UpdateOrder" Method="UpdateOrder">
+    <Parameter Name="CustomerID" Parameter="customerID" Type="System.String" DbType="NChar(5)" />
+    <Parameter Name="EmployeeID" Parameter="employeeID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OrderDate" Parameter="orderDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="RequiredDate" Parameter="requiredDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="ShippedDate" Parameter="shippedDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="ShipVia" Parameter="shipVia" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Freight" Parameter="freight" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="ShipName" Parameter="shipName" Type="System.String" DbType="NVarChar(40)" />
+    <Parameter Name="ShipAddress" Parameter="shipAddress" Type="System.String" DbType="NVarChar(60)" />
+    <Parameter Name="ShipCity" Parameter="shipCity" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="ShipRegion" Parameter="shipRegion" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="ShipPostalCode" Parameter="shipPostalCode" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="ShipCountry" Parameter="shipCountry" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="Original_OrderID" Parameter="original_OrderID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IsNull_CustomerID" Parameter="isNull_CustomerID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_CustomerID" Parameter="original_CustomerID" Type="System.String" DbType="NChar(5)" />
+    <Parameter Name="IsNull_EmployeeID" Parameter="isNull_EmployeeID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_EmployeeID" Parameter="original_EmployeeID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IsNull_OrderDate" Parameter="isNull_OrderDate" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_OrderDate" Parameter="original_OrderDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="IsNull_RequiredDate" Parameter="isNull_RequiredDate" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_RequiredDate" Parameter="original_RequiredDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="IsNull_ShippedDate" Parameter="isNull_ShippedDate" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ShippedDate" Parameter="original_ShippedDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="IsNull_ShipVia" Parameter="isNull_ShipVia" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ShipVia" Parameter="original_ShipVia" Type="System.Int32" DbType="Int" />
+    <Parameter Name="IsNull_Freight" Parameter="isNull_Freight" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_Freight" Parameter="original_Freight" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="IsNull_ShipName" Parameter="isNull_ShipName" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ShipName" Parameter="original_ShipName" Type="System.String" DbType="NVarChar(40)" />
+    <Parameter Name="IsNull_ShipAddress" Parameter="isNull_ShipAddress" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ShipAddress" Parameter="original_ShipAddress" Type="System.String" DbType="NVarChar(60)" />
+    <Parameter Name="IsNull_ShipCity" Parameter="isNull_ShipCity" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ShipCity" Parameter="original_ShipCity" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="IsNull_ShipRegion" Parameter="isNull_ShipRegion" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ShipRegion" Parameter="original_ShipRegion" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="IsNull_ShipPostalCode" Parameter="isNull_ShipPostalCode" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ShipPostalCode" Parameter="original_ShipPostalCode" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="IsNull_ShipCountry" Parameter="isNull_ShipCountry" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ShipCountry" Parameter="original_ShipCountry" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="OrderID" Parameter="orderID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="UpdateOrderResult">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.String" DbType="NChar(5)" CanBeNull="true" />
+      <Column Name="EmployeeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="RequiredDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ShippedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ShipVia" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Freight" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ShipName" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="ShipAddress" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
+      <Column Name="ShipCity" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="ShipRegion" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="ShipPostalCode" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="ShipCountry" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.UpdateOrderDetail" Method="UpdateOrderDetail">
+    <Parameter Name="OrderID" Parameter="orderID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ProductID" Parameter="productID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UnitPrice" Parameter="unitPrice" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="Quantity" Parameter="quantity" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="Discount" Parameter="discount" Type="System.Single" DbType="Real" />
+    <Parameter Name="Original_OrderID" Parameter="original_OrderID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_ProductID" Parameter="original_ProductID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Original_UnitPrice" Parameter="original_UnitPrice" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="Original_Quantity" Parameter="original_Quantity" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="Original_Discount" Parameter="original_Discount" Type="System.Single" DbType="Real" />
+    <ElementType Name="UpdateOrderDetailResult">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Discount" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>

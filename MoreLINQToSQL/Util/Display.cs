@@ -78,5 +78,48 @@ namespace MoreLINQToSQL.Util
         }
 
         #endregion
+
+        #region Display Orders
+
+        public static void ShowOrderDetails(NorthwindDataContext dc, int orderId)
+        {
+            var orderDetails = dc.Order_Details.Where(o => o.OrderID == orderId);
+
+            string.Format("Details for order {0}", orderId).DisplayHeader();
+
+            foreach (var detail in orderDetails)
+            {
+                string.Format("{0} units of {1} at {2:C}",
+                    detail.Quantity, detail.Product.ProductName, detail.UnitPrice).DisplayResults();
+            }
+
+            Console.WriteLine();
+        }
+
+        public static void ShowCustomerOrders(NorthwindDataContext dc, string custId)
+        {
+            var customerOrders =
+                dc.Customers.Where(c => c.CustomerID == custId).Select(c => new { c.CompanyName, c.Orders });
+
+            var customer = customerOrders.FirstOrDefault();
+            if (customer == null)
+                return;
+
+            string.Format("Orders for {0}", customer.CompanyName).DisplayHeader();
+
+            foreach (var cust in customerOrders)
+            {
+                foreach (var order in cust.Orders.OrderByDescending(o => o.OrderDate))
+                {
+                    string.Format("Order {0} placed {1:d} and required {2:d}",
+                        order.OrderID, order.OrderDate, order.RequiredDate).DisplayResults();
+                }
+            }
+
+            Console.WriteLine();
+        }
+
+        #endregion
+
     }
 }

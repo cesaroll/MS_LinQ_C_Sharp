@@ -116,6 +116,89 @@ namespace MoreLINQToSQL
 				return this.GetTable<Category>();
 			}
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteOrder")]
+		public int DeleteOrder([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_OrderID", DbType="Int")] System.Nullable<int> original_OrderID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), original_OrderID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteOrderDetail")]
+		public int DeleteOrderDetail([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_OrderID", DbType="Int")] System.Nullable<int> original_OrderID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ProductID", DbType="Int")] System.Nullable<int> original_ProductID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), original_OrderID, original_ProductID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.AddOrder")]
+		public ISingleResult<AddOrderResult> AddOrder([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerID", DbType="NChar(5)")] string customerID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="EmployeeID", DbType="Int")] System.Nullable<int> employeeID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OrderDate", DbType="DateTime")] System.Nullable<System.DateTime> orderDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RequiredDate", DbType="DateTime")] System.Nullable<System.DateTime> requiredDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShippedDate", DbType="DateTime")] System.Nullable<System.DateTime> shippedDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipVia", DbType="Int")] System.Nullable<int> shipVia, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Freight", DbType="Money")] System.Nullable<decimal> freight, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipName", DbType="NVarChar(40)")] string shipName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipAddress", DbType="NVarChar(60)")] string shipAddress, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipCity", DbType="NVarChar(15)")] string shipCity, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipRegion", DbType="NVarChar(15)")] string shipRegion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipPostalCode", DbType="NVarChar(10)")] string shipPostalCode, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipCountry", DbType="NVarChar(15)")] string shipCountry)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), customerID, employeeID, orderDate, requiredDate, shippedDate, shipVia, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry);
+			return ((ISingleResult<AddOrderResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.AddOrderDetail")]
+		public ISingleResult<AddOrderDetailResult> AddOrderDetail([global::System.Data.Linq.Mapping.ParameterAttribute(Name="OrderID", DbType="Int")] System.Nullable<int> orderID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProductID", DbType="Int")] System.Nullable<int> productID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UnitPrice", DbType="Money")] System.Nullable<decimal> unitPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Quantity", DbType="SmallInt")] System.Nullable<short> quantity, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Discount", DbType="Real")] System.Nullable<float> discount)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orderID, productID, unitPrice, quantity, discount);
+			return ((ISingleResult<AddOrderDetailResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateOrder")]
+		public ISingleResult<UpdateOrderResult> UpdateOrder(
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerID", DbType="NChar(5)")] string customerID, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="EmployeeID", DbType="Int")] System.Nullable<int> employeeID, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="OrderDate", DbType="DateTime")] System.Nullable<System.DateTime> orderDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="RequiredDate", DbType="DateTime")] System.Nullable<System.DateTime> requiredDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShippedDate", DbType="DateTime")] System.Nullable<System.DateTime> shippedDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipVia", DbType="Int")] System.Nullable<int> shipVia, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Freight", DbType="Money")] System.Nullable<decimal> freight, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipName", DbType="NVarChar(40)")] string shipName, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipAddress", DbType="NVarChar(60)")] string shipAddress, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipCity", DbType="NVarChar(15)")] string shipCity, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipRegion", DbType="NVarChar(15)")] string shipRegion, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipPostalCode", DbType="NVarChar(10)")] string shipPostalCode, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShipCountry", DbType="NVarChar(15)")] string shipCountry, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_OrderID", DbType="Int")] System.Nullable<int> original_OrderID, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_CustomerID", DbType="Int")] System.Nullable<int> isNull_CustomerID, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_CustomerID", DbType="NChar(5)")] string original_CustomerID, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_EmployeeID", DbType="Int")] System.Nullable<int> isNull_EmployeeID, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_EmployeeID", DbType="Int")] System.Nullable<int> original_EmployeeID, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_OrderDate", DbType="Int")] System.Nullable<int> isNull_OrderDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_OrderDate", DbType="DateTime")] System.Nullable<System.DateTime> original_OrderDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_RequiredDate", DbType="Int")] System.Nullable<int> isNull_RequiredDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_RequiredDate", DbType="DateTime")] System.Nullable<System.DateTime> original_RequiredDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_ShippedDate", DbType="Int")] System.Nullable<int> isNull_ShippedDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ShippedDate", DbType="DateTime")] System.Nullable<System.DateTime> original_ShippedDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_ShipVia", DbType="Int")] System.Nullable<int> isNull_ShipVia, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ShipVia", DbType="Int")] System.Nullable<int> original_ShipVia, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_Freight", DbType="Int")] System.Nullable<int> isNull_Freight, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_Freight", DbType="Money")] System.Nullable<decimal> original_Freight, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_ShipName", DbType="Int")] System.Nullable<int> isNull_ShipName, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ShipName", DbType="NVarChar(40)")] string original_ShipName, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_ShipAddress", DbType="Int")] System.Nullable<int> isNull_ShipAddress, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ShipAddress", DbType="NVarChar(60)")] string original_ShipAddress, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_ShipCity", DbType="Int")] System.Nullable<int> isNull_ShipCity, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ShipCity", DbType="NVarChar(15)")] string original_ShipCity, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_ShipRegion", DbType="Int")] System.Nullable<int> isNull_ShipRegion, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ShipRegion", DbType="NVarChar(15)")] string original_ShipRegion, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_ShipPostalCode", DbType="Int")] System.Nullable<int> isNull_ShipPostalCode, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ShipPostalCode", DbType="NVarChar(10)")] string original_ShipPostalCode, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="IsNull_ShipCountry", DbType="Int")] System.Nullable<int> isNull_ShipCountry, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ShipCountry", DbType="NVarChar(15)")] string original_ShipCountry, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="OrderID", DbType="Int")] System.Nullable<int> orderID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), customerID, employeeID, orderDate, requiredDate, shippedDate, shipVia, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry, original_OrderID, isNull_CustomerID, original_CustomerID, isNull_EmployeeID, original_EmployeeID, isNull_OrderDate, original_OrderDate, isNull_RequiredDate, original_RequiredDate, isNull_ShippedDate, original_ShippedDate, isNull_ShipVia, original_ShipVia, isNull_Freight, original_Freight, isNull_ShipName, original_ShipName, isNull_ShipAddress, original_ShipAddress, isNull_ShipCity, original_ShipCity, isNull_ShipRegion, original_ShipRegion, isNull_ShipPostalCode, original_ShipPostalCode, isNull_ShipCountry, original_ShipCountry, orderID);
+			return ((ISingleResult<UpdateOrderResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateOrderDetail")]
+		public ISingleResult<UpdateOrderDetailResult> UpdateOrderDetail([global::System.Data.Linq.Mapping.ParameterAttribute(Name="OrderID", DbType="Int")] System.Nullable<int> orderID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProductID", DbType="Int")] System.Nullable<int> productID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UnitPrice", DbType="Money")] System.Nullable<decimal> unitPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Quantity", DbType="SmallInt")] System.Nullable<short> quantity, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Discount", DbType="Real")] System.Nullable<float> discount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_OrderID", DbType="Int")] System.Nullable<int> original_OrderID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_ProductID", DbType="Int")] System.Nullable<int> original_ProductID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_UnitPrice", DbType="Money")] System.Nullable<decimal> original_UnitPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_Quantity", DbType="SmallInt")] System.Nullable<short> original_Quantity, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Original_Discount", DbType="Real")] System.Nullable<float> original_Discount)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orderID, productID, unitPrice, quantity, discount, original_OrderID, original_ProductID, original_UnitPrice, original_Quantity, original_Discount);
+			return ((ISingleResult<UpdateOrderDetailResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Customers")]
@@ -1637,6 +1720,722 @@ namespace MoreLINQToSQL
 		{
 			this.SendPropertyChanging();
 			entity.Category = null;
+		}
+	}
+	
+	public partial class AddOrderResult
+	{
+		
+		private int _OrderID;
+		
+		private string _CustomerID;
+		
+		private System.Nullable<int> _EmployeeID;
+		
+		private System.Nullable<System.DateTime> _OrderDate;
+		
+		private System.Nullable<System.DateTime> _RequiredDate;
+		
+		private System.Nullable<System.DateTime> _ShippedDate;
+		
+		private System.Nullable<int> _ShipVia;
+		
+		private System.Nullable<decimal> _Freight;
+		
+		private string _ShipName;
+		
+		private string _ShipAddress;
+		
+		private string _ShipCity;
+		
+		private string _ShipRegion;
+		
+		private string _ShipPostalCode;
+		
+		private string _ShipCountry;
+		
+		public AddOrderResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderID", DbType="Int NOT NULL")]
+		public int OrderID
+		{
+			get
+			{
+				return this._OrderID;
+			}
+			set
+			{
+				if ((this._OrderID != value))
+				{
+					this._OrderID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="NChar(5)")]
+		public string CustomerID
+		{
+			get
+			{
+				return this._CustomerID;
+			}
+			set
+			{
+				if ((this._CustomerID != value))
+				{
+					this._CustomerID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployeeID", DbType="Int")]
+		public System.Nullable<int> EmployeeID
+		{
+			get
+			{
+				return this._EmployeeID;
+			}
+			set
+			{
+				if ((this._EmployeeID != value))
+				{
+					this._EmployeeID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> OrderDate
+		{
+			get
+			{
+				return this._OrderDate;
+			}
+			set
+			{
+				if ((this._OrderDate != value))
+				{
+					this._OrderDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequiredDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> RequiredDate
+		{
+			get
+			{
+				return this._RequiredDate;
+			}
+			set
+			{
+				if ((this._RequiredDate != value))
+				{
+					this._RequiredDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShippedDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ShippedDate
+		{
+			get
+			{
+				return this._ShippedDate;
+			}
+			set
+			{
+				if ((this._ShippedDate != value))
+				{
+					this._ShippedDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipVia", DbType="Int")]
+		public System.Nullable<int> ShipVia
+		{
+			get
+			{
+				return this._ShipVia;
+			}
+			set
+			{
+				if ((this._ShipVia != value))
+				{
+					this._ShipVia = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Freight", DbType="Money")]
+		public System.Nullable<decimal> Freight
+		{
+			get
+			{
+				return this._Freight;
+			}
+			set
+			{
+				if ((this._Freight != value))
+				{
+					this._Freight = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipName", DbType="NVarChar(40)")]
+		public string ShipName
+		{
+			get
+			{
+				return this._ShipName;
+			}
+			set
+			{
+				if ((this._ShipName != value))
+				{
+					this._ShipName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipAddress", DbType="NVarChar(60)")]
+		public string ShipAddress
+		{
+			get
+			{
+				return this._ShipAddress;
+			}
+			set
+			{
+				if ((this._ShipAddress != value))
+				{
+					this._ShipAddress = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipCity", DbType="NVarChar(15)")]
+		public string ShipCity
+		{
+			get
+			{
+				return this._ShipCity;
+			}
+			set
+			{
+				if ((this._ShipCity != value))
+				{
+					this._ShipCity = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipRegion", DbType="NVarChar(15)")]
+		public string ShipRegion
+		{
+			get
+			{
+				return this._ShipRegion;
+			}
+			set
+			{
+				if ((this._ShipRegion != value))
+				{
+					this._ShipRegion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipPostalCode", DbType="NVarChar(10)")]
+		public string ShipPostalCode
+		{
+			get
+			{
+				return this._ShipPostalCode;
+			}
+			set
+			{
+				if ((this._ShipPostalCode != value))
+				{
+					this._ShipPostalCode = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipCountry", DbType="NVarChar(15)")]
+		public string ShipCountry
+		{
+			get
+			{
+				return this._ShipCountry;
+			}
+			set
+			{
+				if ((this._ShipCountry != value))
+				{
+					this._ShipCountry = value;
+				}
+			}
+		}
+	}
+	
+	public partial class AddOrderDetailResult
+	{
+		
+		private int _OrderID;
+		
+		private int _ProductID;
+		
+		private decimal _UnitPrice;
+		
+		private short _Quantity;
+		
+		private float _Discount;
+		
+		public AddOrderDetailResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderID", DbType="Int NOT NULL")]
+		public int OrderID
+		{
+			get
+			{
+				return this._OrderID;
+			}
+			set
+			{
+				if ((this._OrderID != value))
+				{
+					this._OrderID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int NOT NULL")]
+		public int ProductID
+		{
+			get
+			{
+				return this._ProductID;
+			}
+			set
+			{
+				if ((this._ProductID != value))
+				{
+					this._ProductID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitPrice", DbType="Money NOT NULL")]
+		public decimal UnitPrice
+		{
+			get
+			{
+				return this._UnitPrice;
+			}
+			set
+			{
+				if ((this._UnitPrice != value))
+				{
+					this._UnitPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="SmallInt NOT NULL")]
+		public short Quantity
+		{
+			get
+			{
+				return this._Quantity;
+			}
+			set
+			{
+				if ((this._Quantity != value))
+				{
+					this._Quantity = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Discount", DbType="Real NOT NULL")]
+		public float Discount
+		{
+			get
+			{
+				return this._Discount;
+			}
+			set
+			{
+				if ((this._Discount != value))
+				{
+					this._Discount = value;
+				}
+			}
+		}
+	}
+	
+	public partial class UpdateOrderResult
+	{
+		
+		private int _OrderID;
+		
+		private string _CustomerID;
+		
+		private System.Nullable<int> _EmployeeID;
+		
+		private System.Nullable<System.DateTime> _OrderDate;
+		
+		private System.Nullable<System.DateTime> _RequiredDate;
+		
+		private System.Nullable<System.DateTime> _ShippedDate;
+		
+		private System.Nullable<int> _ShipVia;
+		
+		private System.Nullable<decimal> _Freight;
+		
+		private string _ShipName;
+		
+		private string _ShipAddress;
+		
+		private string _ShipCity;
+		
+		private string _ShipRegion;
+		
+		private string _ShipPostalCode;
+		
+		private string _ShipCountry;
+		
+		public UpdateOrderResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderID", DbType="Int NOT NULL")]
+		public int OrderID
+		{
+			get
+			{
+				return this._OrderID;
+			}
+			set
+			{
+				if ((this._OrderID != value))
+				{
+					this._OrderID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="NChar(5)")]
+		public string CustomerID
+		{
+			get
+			{
+				return this._CustomerID;
+			}
+			set
+			{
+				if ((this._CustomerID != value))
+				{
+					this._CustomerID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployeeID", DbType="Int")]
+		public System.Nullable<int> EmployeeID
+		{
+			get
+			{
+				return this._EmployeeID;
+			}
+			set
+			{
+				if ((this._EmployeeID != value))
+				{
+					this._EmployeeID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> OrderDate
+		{
+			get
+			{
+				return this._OrderDate;
+			}
+			set
+			{
+				if ((this._OrderDate != value))
+				{
+					this._OrderDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequiredDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> RequiredDate
+		{
+			get
+			{
+				return this._RequiredDate;
+			}
+			set
+			{
+				if ((this._RequiredDate != value))
+				{
+					this._RequiredDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShippedDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ShippedDate
+		{
+			get
+			{
+				return this._ShippedDate;
+			}
+			set
+			{
+				if ((this._ShippedDate != value))
+				{
+					this._ShippedDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipVia", DbType="Int")]
+		public System.Nullable<int> ShipVia
+		{
+			get
+			{
+				return this._ShipVia;
+			}
+			set
+			{
+				if ((this._ShipVia != value))
+				{
+					this._ShipVia = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Freight", DbType="Money")]
+		public System.Nullable<decimal> Freight
+		{
+			get
+			{
+				return this._Freight;
+			}
+			set
+			{
+				if ((this._Freight != value))
+				{
+					this._Freight = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipName", DbType="NVarChar(40)")]
+		public string ShipName
+		{
+			get
+			{
+				return this._ShipName;
+			}
+			set
+			{
+				if ((this._ShipName != value))
+				{
+					this._ShipName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipAddress", DbType="NVarChar(60)")]
+		public string ShipAddress
+		{
+			get
+			{
+				return this._ShipAddress;
+			}
+			set
+			{
+				if ((this._ShipAddress != value))
+				{
+					this._ShipAddress = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipCity", DbType="NVarChar(15)")]
+		public string ShipCity
+		{
+			get
+			{
+				return this._ShipCity;
+			}
+			set
+			{
+				if ((this._ShipCity != value))
+				{
+					this._ShipCity = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipRegion", DbType="NVarChar(15)")]
+		public string ShipRegion
+		{
+			get
+			{
+				return this._ShipRegion;
+			}
+			set
+			{
+				if ((this._ShipRegion != value))
+				{
+					this._ShipRegion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipPostalCode", DbType="NVarChar(10)")]
+		public string ShipPostalCode
+		{
+			get
+			{
+				return this._ShipPostalCode;
+			}
+			set
+			{
+				if ((this._ShipPostalCode != value))
+				{
+					this._ShipPostalCode = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShipCountry", DbType="NVarChar(15)")]
+		public string ShipCountry
+		{
+			get
+			{
+				return this._ShipCountry;
+			}
+			set
+			{
+				if ((this._ShipCountry != value))
+				{
+					this._ShipCountry = value;
+				}
+			}
+		}
+	}
+	
+	public partial class UpdateOrderDetailResult
+	{
+		
+		private int _OrderID;
+		
+		private int _ProductID;
+		
+		private decimal _UnitPrice;
+		
+		private short _Quantity;
+		
+		private float _Discount;
+		
+		public UpdateOrderDetailResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderID", DbType="Int NOT NULL")]
+		public int OrderID
+		{
+			get
+			{
+				return this._OrderID;
+			}
+			set
+			{
+				if ((this._OrderID != value))
+				{
+					this._OrderID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int NOT NULL")]
+		public int ProductID
+		{
+			get
+			{
+				return this._ProductID;
+			}
+			set
+			{
+				if ((this._ProductID != value))
+				{
+					this._ProductID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitPrice", DbType="Money NOT NULL")]
+		public decimal UnitPrice
+		{
+			get
+			{
+				return this._UnitPrice;
+			}
+			set
+			{
+				if ((this._UnitPrice != value))
+				{
+					this._UnitPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="SmallInt NOT NULL")]
+		public short Quantity
+		{
+			get
+			{
+				return this._Quantity;
+			}
+			set
+			{
+				if ((this._Quantity != value))
+				{
+					this._Quantity = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Discount", DbType="Real NOT NULL")]
+		public float Discount
+		{
+			get
+			{
+				return this._Discount;
+			}
+			set
+			{
+				if ((this._Discount != value))
+				{
+					this._Discount = value;
+				}
+			}
 		}
 	}
 }

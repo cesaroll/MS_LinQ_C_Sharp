@@ -21,6 +21,169 @@ namespace MoreLINQToSQL
 
         }
 
+        #region Transactions
+
+        /// <summary>
+        /// Using Transaction Scope with Exception Example
+        /// </summary>
+        private void Transactions3()
+        {
+            var dc = new NorthwindDataContext();
+
+            var custId = "ALFKI";
+
+            //Retrieve Customer
+            var customer = dc.Customers.SingleOrDefault(c => c.CustomerID == custId);
+
+            if (customer == null)
+            {
+                string.Format("Customer: [{0}] does NOT exist!").DisplayResults();
+                return;
+            }
+
+            AddOrderResult newOrderResult = null;
+            //Open transaction Scope
+            using (var transScope = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    //Create Customer Order
+                    var result = dc.AddOrder(custId,
+                        4,
+                        DateTime.Today,
+                        DateTime.Today.AddDays(7),
+                        null,
+                        1,
+                        20.5m,
+                        "Costa Concordia",
+                        customer.Address,
+                        customer.City,
+                        customer.Region,
+                        customer.PostalCode,
+                        customer.Country).ToList();
+
+                    newOrderResult = result[0];
+
+                    //Create Details
+                    dc.AddOrderDetail(newOrderResult.OrderID, 7, 25, 10, 0);
+                    dc.AddOrderDetail(newOrderResult.OrderID, 99, 10, 15, 0);
+                    dc.AddOrderDetail(newOrderResult.OrderID, 12, 20, 25, 0);
+
+                    //Commit Transaction
+                    transScope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    "Exception".DisplayHeader();
+                    ex.Message.DisplayResults();
+                }
+            }
+
+            
+            //Show Customer Orders
+            Display.ShowCustomerOrders(dc, custId);
+            //Show Order Details
+            Display.ShowOrderDetails(dc, newOrderResult.OrderID);
+        }
+
+        /// <summary>
+        /// Using Transaction Scope. OK
+        /// </summary>
+        private void Transactions2()
+        {
+            var dc = new NorthwindDataContext();
+
+            var custId = "ALFKI";
+
+            //Retrieve Customer
+            var customer = dc.Customers.SingleOrDefault(c => c.CustomerID == custId);
+
+            if(customer == null)
+            {
+                string.Format("Customer: [{0}] does NOT exist!").DisplayResults();
+                return;
+            }
+
+            //Get Latest Customer Order
+            var order = customer.Orders.OrderByDescending(o => o.OrderID).FirstOrDefault();
+
+            //Open transaction Scope
+            using (var transScope = new System.Transactions.TransactionScope())
+            {
+                try
+                {
+                    //Delete Details
+                    foreach (var detail in order.Order_Details)
+                    {
+                        dc.DeleteOrderDetail(detail.OrderID, detail.ProductID);
+                    }
+
+                    //Delete Order
+                    dc.DeleteOrder(order.OrderID);
+
+                    //Commit Transaction
+                    transScope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    "Exception".DisplayHeader();
+                    ex.Message.DisplayResults();
+                }
+            }
+
+            //Show Customer Orders
+            Display.ShowCustomerOrders(dc, custId);
+
+        }
+
+        /// <summary>
+        /// Implicit Transaction
+        /// </summary>
+        private void Transactions1()
+        {
+            var dc = new NorthwindDataContext();
+
+            var custID = "ALFKI";
+
+            //Retrieve Customer
+            var customer = dc.Customers.SingleOrDefault(c => c.CustomerID == custID);
+
+            if (customer == null)
+            {
+                string.Format("Customer: [{0}] does NOT exist!").DisplayResults();
+                return;
+            }
+
+            //Crete new Customer Order
+            var newOrder = new Order
+            {
+                CustomerID = custID,
+                OrderDate = DateTime.Today,
+                RequiredDate = DateTime.Today.AddDays(7),
+                EmployeeID = 4
+            };
+            
+            //Add the order
+            customer.Orders.Add(newOrder);
+
+            //Create and add order details
+            newOrder.Order_Details.Add(new Order_Detail {ProductID = 7, UnitPrice = 25, Quantity = 10, Discount = 0});
+            newOrder.Order_Details.Add(new Order_Detail {ProductID = 8, UnitPrice = 10, Quantity = 15, Discount = 0});
+            newOrder.Order_Details.Add(new Order_Detail {ProductID = 12, UnitPrice = 20, Quantity = 25, Discount = 0});
+
+            //Save Changes in the implicit transaction
+            dc.SubmitChanges();
+
+            //Show Customer Orders
+            Display.ShowCustomerOrders(dc, custID);
+            //Show Order Details
+            Display.ShowOrderDetails(dc, newOrder.OrderID);
+
+
+        }
+
+        #endregion
+
         #region Direct Execution
 
         /// <summary>
@@ -194,6 +357,7 @@ namespace MoreLINQToSQL
                 Console.WriteLine("C: Compiled Queries");
                 Console.WriteLine("D: Compiled Static Queries");
                 Console.WriteLine("E: Direct Execution");
+                Console.WriteLine("F: Transactions");
 
                 Console.WriteLine("\nEnter an Option ('.' to exit):");
 
@@ -221,6 +385,9 @@ namespace MoreLINQToSQL
                         DirectExecution();
                         break;
                     case 'F':
+                        Transactions1();
+                        Transactions2();
+                        Transactions3();
                         break;
                     case 'G':
                         break;
