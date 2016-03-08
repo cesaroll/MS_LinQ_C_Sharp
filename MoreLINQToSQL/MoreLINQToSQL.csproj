@@ -63,6 +63,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Util\CompiledQueries.cs" />
     <Compile Include="Util\Display.cs" />
   </ItemGroup>
   <ItemGroup>

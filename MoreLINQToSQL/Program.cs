@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Linq;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -19,6 +20,59 @@ namespace MoreLINQToSQL
             prog.Menu();
 
         }
+
+        #region Compiled Static Queries
+
+        private void CompiledStaticQueries()
+        {
+            var dc = new NorthwindDataContext();
+
+            "Customers in the USA".DisplayHeader();
+            foreach (var customer in NorthWindQueries.CustomersInTheUSA(dc))
+            {
+                string.Format("{0} in {1}, {2}", customer.CompanyName, customer.City, customer.Region).DisplayResults();
+            }
+            
+            "Customers in Washington".DisplayHeader();
+
+            foreach (var customer in NorthWindQueries.CustomersInARegion(dc, "WA"))
+            {
+                string.Format("{0} in {1}, {2}", customer.CompanyName, customer.City, customer.Region).DisplayResults();
+            }
+
+        }
+
+        #endregion
+
+        #region Compiled Queries
+
+        /// <summary>
+        /// Precompiled Queries example
+        /// </summary>
+        private void CompiledQueries()
+        {
+            var dc = new NorthwindDataContext();
+
+            //Precompile Query to retrieve customers in USA
+            var usaCustomers = CompiledQuery.Compile((NorthwindDataContext ctx) => ctx.Customers
+                .Where(c => c.Country == "USA")
+                .Select(c => new
+                {
+                    c.CompanyName, 
+                    c.City, 
+                    c.Region
+                }));
+
+            "Customers in the USA".DisplayHeader();
+
+            foreach (var cust in usaCustomers(dc))
+            {
+                string.Format("{0} in {1}, {2}", cust.CompanyName, cust.City, cust.Region).DisplayResults();
+            }
+
+        }
+
+        #endregion
 
         #region Read Only Queries
 
@@ -114,6 +168,8 @@ namespace MoreLINQToSQL
 
                 Console.WriteLine("A: Deferred Loading");
                 Console.WriteLine("B: Read Only Queries");
+                Console.WriteLine("C: Compiled Queries");
+                Console.WriteLine("D: Compiled Static Queries");
 
                 Console.WriteLine("\nEnter an Option ('.' to exit):");
 
@@ -132,44 +188,19 @@ namespace MoreLINQToSQL
                         ReadOnlyQueries();
                         break;
                     case 'C':
+                        CompiledQueries();
                         break;
                     case 'D':
+                        CompiledStaticQueries();
                         break;
                     case 'E':
+                        
                         break;
                     case 'F':
                         break;
                     case 'G':
                         break;
                     case 'H':
-                        break;
-                    case 'I':
-                        break;
-                    case 'J':
-                        break;
-                    case 'K':
-                        break;
-                    case 'L':
-                        break;
-                    case 'M':
-
-                        break;
-                    case 'N':
-
-                        break;
-                    case 'O':
-                        break;
-                    case 'P':
-
-                        break;
-                    case 'Q':
-
-                        break;
-                    case 'R':
-
-                        break;
-                    case 'S':
-
                         break;
                     case '.':
                         return;
