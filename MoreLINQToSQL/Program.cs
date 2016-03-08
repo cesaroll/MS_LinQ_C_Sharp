@@ -21,6 +21,29 @@ namespace MoreLINQToSQL
 
         }
 
+        #region Direct Execution
+
+        /// <summary>
+        /// Talk Direct to SQL Server
+        /// </summary>
+        private void DirectExecution()
+        {
+            var dc = new NorthwindDataContext();
+
+            var usaCustomers = dc.ExecuteQuery<Customer>(@"SELECT CustomerID, CompanyName, City, Region  
+                    FROM Customers WHERE Country = 'USA' ");
+
+            "Customers in the USA".DisplayHeader();
+
+            foreach (var cust in usaCustomers)
+            {
+                string.Format("{0} in {1}, {2}", cust.CompanyName, cust.City, cust.Region).DisplayResults();
+            }
+
+        }
+
+        #endregion
+
         #region Compiled Static Queries
 
         private void CompiledStaticQueries()
@@ -170,6 +193,7 @@ namespace MoreLINQToSQL
                 Console.WriteLine("B: Read Only Queries");
                 Console.WriteLine("C: Compiled Queries");
                 Console.WriteLine("D: Compiled Static Queries");
+                Console.WriteLine("E: Direct Execution");
 
                 Console.WriteLine("\nEnter an Option ('.' to exit):");
 
@@ -194,7 +218,7 @@ namespace MoreLINQToSQL
                         CompiledStaticQueries();
                         break;
                     case 'E':
-                        
+                        DirectExecution();
                         break;
                     case 'F':
                         break;
