@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MoreLINQToSQL.Util;
 
 namespace MoreLINQToSQL
 {
@@ -18,6 +19,37 @@ namespace MoreLINQToSQL
             prog.Menu();
 
         }
+
+        #region Read Only Queries
+
+        private void ReadOnlyQueries()
+        {
+            var dc = new NorthwindDataContext();
+
+
+            //Beware that disabling tracking also disables deferred execution
+            dc.ObjectTrackingEnabled = false;
+
+            //Retrieve Customers in USA
+            var usaCustomers = from customer in dc.Customers
+                where customer.Country == "USA"
+                select new
+                {
+                    customer.CompanyName,
+                    customer.City,
+                    customer.Region
+                };
+
+            "Customers in the USA".DisplayHeader();
+
+            foreach (var customer in usaCustomers)
+            {
+                string.Format("{0} in {1}, {2}", customer.CompanyName, customer.City, customer.Region).DisplayResults();
+            }
+
+        }
+
+        #endregion
 
         #region Deferred Loading
 
@@ -72,14 +104,16 @@ namespace MoreLINQToSQL
 
         #region Menu
         public void Menu()
-        {  
+        {
+            bool isDefault;
 
             while (true)
             {
-               
+                isDefault = false;
                 Console.Clear();
 
                 Console.WriteLine("A: Deferred Loading");
+                Console.WriteLine("B: Read Only Queries");
 
                 Console.WriteLine("\nEnter an Option ('.' to exit):");
 
@@ -95,6 +129,7 @@ namespace MoreLINQToSQL
                         DeferredLoading();
                         break;
                     case 'B':
+                        ReadOnlyQueries();
                         break;
                     case 'C':
                         break;
@@ -139,10 +174,11 @@ namespace MoreLINQToSQL
                     case '.':
                         return;
                     default:
+                        isDefault = true;
                         break;
                 }
 
-                if (Console.ReadKey().KeyChar == '.')
+                if (!isDefault & Console.ReadKey(true).KeyChar == '.')
                     return;
             }
 
