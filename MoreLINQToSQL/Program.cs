@@ -21,6 +21,187 @@ namespace MoreLINQToSQL
 
         }
 
+        #region Data Validation
+
+        /// <summary>
+        /// Test Validation of Invalid Update
+        /// Required Date
+        /// This is executed when SubmitChanges() to DB
+        /// </summary>
+        private void DataValidation3()
+        {
+            //Try to Change the required date of an existing order, prior to orderd date
+
+            var dc = new NorthwindDataContext();
+
+            var custId = "ALFKI";
+
+            //Retrieve customer
+            var customer = dc.Customers.SingleOrDefault(c => c.CustomerID == custId);
+
+            if (customer == null)
+            {
+                string.Format("Customer: [{0}] does NOT exist!").DisplayHeader();
+                return;
+            }
+
+            //Create a valid new order
+            var newOrder = new Order
+            {
+                CustomerID = custId,
+                OrderDate = DateTime.Today,
+                RequiredDate = DateTime.Today.AddDays(7),
+                EmployeeID = 4
+            };
+
+            customer.Orders.Add(newOrder);
+
+            //Try to save order
+            try
+            {
+                dc.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.DisplayResults();
+            }
+
+
+            //Update order
+            try
+            {
+                newOrder.RequiredDate = newOrder.OrderDate.Value.Subtract(new TimeSpan(1, 0, 0, 0));
+                dc.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.DisplayResults();
+            }
+
+            //Delete Order (Clean Up)
+            try
+            {
+                customer.Orders.Remove(newOrder);
+                dc.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.DisplayResults();
+            }
+
+        }
+
+        /// <summary>
+        /// Test Validation of Invalid OrderDate Changing
+        /// This happens even before submitting to the DB
+        /// </summary>
+        private void DataValidation2()
+        {
+            //Try to Change the order date of an existing order
+
+            var dc = new NorthwindDataContext();
+
+            var custId = "ALFKI";
+
+            //Retrieve customer
+            var customer = dc.Customers.SingleOrDefault(c => c.CustomerID == custId);
+
+            if (customer == null)
+            {
+                string.Format("Customer: [{0}] does NOT exist!").DisplayHeader();
+                return;
+            }
+
+            //Create a valid new order
+            var newOrder = new Order
+            {
+                CustomerID = custId,
+                OrderDate = DateTime.Today,
+                RequiredDate = DateTime.Today.AddDays(7),
+                EmployeeID = 4
+            };
+
+            customer.Orders.Add(newOrder);
+
+            //Try to save order
+            try
+            {
+                dc.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.DisplayResults();
+            }
+
+
+            //Update order
+            try
+            {
+                newOrder.OrderDate = DateTime.Today.Subtract(new TimeSpan(1, 0, 0, 0));
+                dc.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.DisplayResults();
+            }
+            
+            //Delete Order (Clean Up)
+            try
+            {
+                customer.Orders.Remove(newOrder);
+                dc.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.DisplayResults();
+            }
+
+        }
+
+        /// <summary>
+        /// Test Validation of Invalid Insert to DB
+        /// Invalid OrderDate
+        /// </summary>
+        private void DataValidation1()
+        {
+            var dc = new NorthwindDataContext();
+
+            var custId = "ALFKI";
+
+            //Retrieve customer
+            var customer = dc.Customers.SingleOrDefault(c => c.CustomerID == custId);
+
+            if (customer == null)
+            {
+                string.Format("Customer: [{0}] does NOT exist!").DisplayHeader();
+                return;
+            }
+
+            //Create an invalid new order
+            var newOrder = new Order
+            {
+                CustomerID = custId,
+                OrderDate = DateTime.Today.Subtract(new TimeSpan(1,0,0,0)),
+                RequiredDate = DateTime.Today.AddDays(7),
+                EmployeeID = 4
+            };
+
+            customer.Orders.Add(newOrder);
+
+            //Try to save order
+            try
+            {
+                dc.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ex.Message.DisplayResults();
+            }
+
+        }
+
+        #endregion
+
         #region Transactions
 
         /// <summary>
@@ -358,6 +539,7 @@ namespace MoreLINQToSQL
                 Console.WriteLine("D: Compiled Static Queries");
                 Console.WriteLine("E: Direct Execution");
                 Console.WriteLine("F: Transactions");
+                Console.WriteLine("G: Data Validation");
 
                 Console.WriteLine("\nEnter an Option ('.' to exit):");
 
@@ -390,6 +572,9 @@ namespace MoreLINQToSQL
                         Transactions3();
                         break;
                     case 'G':
+                        DataValidation1();
+                        DataValidation2();
+                        DataValidation3();
                         break;
                     case 'H':
                         break;
